@@ -10,4 +10,4 @@ discovery_rules_rhisam:
     locations: "{{ satellite_location }}"
     search: 'disk_count = 2 and memory > 32000 and facts.interfaces ~ "*,*,*,*"'
     priority: 20
-    hostgroup: "RHEL9base/RHEL9_CIS2"
+    hostgroup: "RHEL8base/RHEL8_CIS2_RAID"

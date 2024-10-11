@@ -7,40 +7,6 @@
 # yamllint disable rule:line-length
 
 global_parameters_rhisam:
-  - name: "ansible_host_config_key"
-    value: "50f79524-5415-462b-b5d3-2eeebc65aaac"
-    parameter_type: "string"
-    hidden_value: false
-    state: "present"
-
-  - name: "ansible_job_template_id"
-    value: 11
-    parameter_type: "integer"
-    hidden_value: false
-    state: "present"
-
-  - name: "ansible_roles_check_mode"
-    value: false
-    parameter_type: "boolean"
-    hidden_value: false
-    state: "present"
-
-  - name: "ansible_tower_fqdn"
-    value: "aap.example.ca"
-    parameter_type: "string"
-    hidden_value: false
-    state: "present"
-
-  - name: "ansible_tower_provisioning"
-    value: false
-    parameter_type: "boolean"
-    hidden_value: false
-    state: "present"
-
-  - name: "enable-epel"
-    value: false
-    parameter_type: "boolean"
-
   - name: "enable-remote-execution-pull"
     value: false
     parameter_type: "boolean"
@@ -63,11 +29,11 @@ global_parameters_rhisam:
     parameter_type: "string"
 
   - name: "host_registration_insights"
-    value: true
+    value: false
     parameter_type: "boolean"
 
   - name: "host_registration_remote_execution"
-    value: true
+    value: false
     parameter_type: "boolean"
 
   - name: "network_zone"
@@ -76,10 +42,6 @@ global_parameters_rhisam:
 
   - name: "package_upgrade"
     value: true
-    parameter_type: "boolean"
-
-  - name: "redhat_install_agent"
-    value: false
     parameter_type: "boolean"
 
   - name: "redhat_install_host_tools"
@@ -91,29 +53,33 @@ global_parameters_rhisam:
     parameter_type: "boolean"
 
   - name: "remove_default_passphrase"
-    value: true
+    value: false
     parameter_type: "boolean"
 
-  - name: "remote_execution_ssh_keys"
-    value: "{{ remote_execution_ssh_keys_vault }}"
-    parameter_type: "string"
-
-  - name: "remote_execution_ssh_user"
-    value: "{{ remote_execution_ssh_user_vault }}"
-    parameter_type: "string"
-
-  - name: "remote_execution_create_user"
-    value: true
+  - name: "use_NBDE"
+    value: false
     parameter_type: "boolean"
 
-  - name: "remote_execution_effective_user_method"
-    value: "sudo"
+  - name: "ndbe_threshold"
+    value: "2"
+    parameter_type: "integer"
+
+  - name: "tang_URL"
+    value: "http://10.160.28.31,http://10.160.28.32,http://10.160.28.33,http://10.160.28.34,http://10.160.28.35"
+    parameter_type: "string"
+
+  - name: "enc_target_drive"
+    value: "tbd"
+    parameter_type: "string"
+
+  - name: "default_passphrase"
+    value: "secret"
     parameter_type: "string"
 
 # Syspurpose global params removed since we are moved to SCA
 
   - name: "use_foreman_users"
-    value: true
+    value: false
     parameter_type: "boolean"
 
   - name: "use_ntp"
