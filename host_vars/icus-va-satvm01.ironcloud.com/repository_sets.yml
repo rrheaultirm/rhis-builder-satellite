@@ -1,0 +1,63 @@
+---
+# "Technically" these are products, but lets not quibble
+
+# Red Hat Repositories
+# - rhisam: make demos work - this pattern is used throughout
+# - user: let's *you* do stuff - this pattern is used throughout
+# the repo may or may not have a basearch or releasever - unfortunately, not a lot of consistency here
+#
+
+# Sync / Publish / Promote main control vars
+# set to true to overide default to sync all content, publish all CVs and CCVs, and promote
+# these are valuable in testing or in maintainance runs
+
+# if you skip synchronization and
+# you added kickstart repos to your product and content views
+# satellite doesnt register the kickstart repos as synchronized content (obviously)
+# new definitions like hostgroups then fail with bad content definitions
+# avoid setting skip_sync_all or skip_publish_all in your variable file where possible
+# call it with an extravar instead
+
+skip_sync_all: false
+last_sync_threshold_hours: 12
+
+# Add additional content not needed for boostrap but still valuable and useful
+# Can be set to false to skip managemet of repos, CVs and CCVs
+repository_sets_rhisam:
+# RHEL 8.x kickstarts
+  - name: "Red Hat Enterprise Linux 8 for x86_64 - BaseOS (Kickstart)"
+    product: "Red Hat Enterprise Linux for x86_64"
+    repository_list:
+      - releasever: "8.10"
+
+  - name: "Red Hat Enterprise Linux 8 for x86_64 - AppStream (Kickstart)"
+    product: "Red Hat Enterprise Linux for x86_64"
+    repository_list:
+      - releasever: "8.10"
+
+# RHEL 8 Repos
+  - name: "Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)"
+    product: "Red Hat Enterprise Linux for x86_64"
+    repository_list:
+      - releasever: "8"
+
+  - name: "Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)"
+    product: "Red Hat Enterprise Linux for x86_64"
+    repository_list:
+      - releasever: "8"
+
+  - name: "Red Hat Enterprise Linux 8 for x86_64 - Supplementary (RPMs)"
+    product: "Red Hat Enterprise Linux for x86_64"
+    repository_list:
+      - releasever: "8"
+
+  - name: "Red Hat Satellite Client 6 for RHEL 8 x86_64 (RPMs)"
+    product: "Red Hat Enterprise Linux for x86_64"
+
+
+# Satellite 6.15
+  - name: "Red Hat Satellite Capsule 6.15 for RHEL 8 x86_64 (RPMs)"
+    product: "Red Hat Satellite Capsule"
+
+  - name: "Red Hat Satellite Maintenance 6.15 for RHEL 8 x86_64 (RPMs)"
+    product: "Red Hat Enterprise Linux for x86_64"
