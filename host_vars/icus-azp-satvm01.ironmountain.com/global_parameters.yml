@@ -1,0 +1,93 @@
+---
+
+# These are the global parameters that provide defaults for all the
+# provisioning templates that we import. Override the default parameters in the hostgroups
+
+# Tell the YAML linter to ignore long lines
+# yamllint disable rule:line-length
+
+global_parameters_rhisam:
+  - name: "enable-remote-execution-pull"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "fips_enabled"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "encrypt_grub"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "grubmenu_pass"
+    value: "grub.pbkdf2.sha512.10000.513EB658A14D5090C45943245F4A77F1FC0220BE9931E1A7986AAC5A6E02EDFF8E7091B4BE33AE0FF2324D28FF92C58A4AFB7AAB8A39A61AE5197B2F96280062.3D80CE311344A666AED1E3882E41F4455EA8567FA75D9CF70313D0A7F5A6AB0CEB269491ECA20DCCC653A111C3E6BF59F49E0FDE9E62EED9AA75C168A10A2C18"
+    parameter_type: "string"
+    hidden_value: true
+
+  - name: "host_packages"
+    value: "vim"
+    parameter_type: "string"
+
+  - name: "host_registration_insights"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "host_registration_remote_execution"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "network_zone"
+    value: "public"
+    parameter_type: "string"
+
+  - name: "package_upgrade"
+    value: true
+    parameter_type: "boolean"
+
+  - name: "redhat_install_host_tools"
+    value: true
+    parameter_type: "boolean"
+
+  - name: "redhat_install_host_tracer_tools"
+    value: true
+    parameter_type: "boolean"
+
+  - name: "remove_default_passphrase"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "use_NBDE"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "ndbe_threshold"
+    value: "2"
+    parameter_type: "integer"
+
+  - name: "tang_URL"
+    value: "http://10.160.28.31,http://10.160.28.32,http://10.160.28.33,http://10.160.28.34,http://10.160.28.35"
+    parameter_type: "string"
+
+  - name: "enc_target_drive"
+    value: "tbd"
+    parameter_type: "string"
+
+  - name: "default_passphrase"
+    value: "secret"
+    parameter_type: "string"
+
+# Syspurpose global params removed since we are moved to SCA
+
+  - name: "use_foreman_users"
+    value: false
+    parameter_type: "boolean"
+
+  - name: "use_ntp"
+    value: false
+    parameter_type: "boolean"
+
+global_parameters_user:
+
+  - name: "an_example_user_global_parameter"
+    value: "Delete Me"
+    parameter_type: "string"

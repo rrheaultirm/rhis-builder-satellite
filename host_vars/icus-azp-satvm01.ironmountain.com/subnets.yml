@@ -1,0 +1,27 @@
+---
+subnets_rhisam:
+  - name: "labsubnet"
+    description: "Front side for client apps"
+    network_type: "IPv4"
+    network: 10.160.38.0
+    prefix: 23
+    mask: 255.255.254.0
+    gateway: 10.160.38.1
+    dns_primary: 10.160.38.198
+    dns_secondary: 10.130.121.44
+    ipam: "Internal DB"
+    from_ip: 10.160.38.11
+    to_ip: 10.160.38.240
+    boot_mode: "Static"
+    discovery_capsule: "{{ satellite_fqdn }}"
+    tftp_capsule: "{{ satellite_fqdn }}"
+    dns_capsule: "{{ satellite_fqdn }}"
+    template_capsule: "{{ satellite_fqdn }}"
+    domains:
+      - "{{ satellite_domain }}"
+    locations:
+      - "{{ satellite_location }}"
+    organizations:
+      - "{{ satellite_organization }}"
+
+# subnets_user:

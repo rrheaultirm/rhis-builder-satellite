@@ -6,7 +6,7 @@ localhost
 [idm_replicas]
 
 [sat_primary]
-icus-va-satvm01.ironcloud.com
+icus-azp-satvm01.ironmountain.com
 # satellite.parmstrong.ca
 # satdev.parmstrong.ca
 # sat.example.ca

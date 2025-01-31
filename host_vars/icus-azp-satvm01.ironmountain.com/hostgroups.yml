@@ -1,0 +1,26 @@
+---
+# Satellite Hostgroup configurations
+
+hostgroups_rhisam:
+  - name: "RHEL8base"
+    description: "RHEL 8 SOE base hostgroup"
+    activation_keys: "SOE_RHEL8"
+    architecture: "x86_64"
+    content_source: "{{ ansible_fqdn }}"
+    content_view: "SOE_RHEL8"
+    domain: "{{ satellite_domain }}"
+    lifecycle_environment: "Development"
+    kickstart_repository: "Red Hat Enterprise Linux 8 for x86_64 - BaseOS Kickstart 8.10"
+    locations: "{{ satellite_location }}"
+    organization: "{{ satellite_organization }}"
+    openscap_capsule: "{{ satellite_fqdn }}"
+    operatingsystem: "RHEL 8.10"
+    ptable: "RHEL_Server_CIS1"
+    pxe_loader: "PXELinux BIOS"
+    subnet: "labsubnet"
+
+  - name: "RHEL8_CIS2_RAID"
+    parent: "RHEL8base"
+    description: "RHEL 8 SOE for CIS Server 2 compliance template"
+    ptable: "RHEL_Server_Compliance_Encrypted_RAID"
+    organization: "{{ satellite_organization }}"
