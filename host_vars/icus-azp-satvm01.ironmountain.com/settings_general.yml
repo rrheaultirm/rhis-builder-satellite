@@ -7,12 +7,12 @@
 settings_general:
   - description: "The default administrator email address"
     settings_type: "string"
-    default: "root@parmstrong.ca"
+    default: "root@ironmountain.com"
     updated_at: null
     id: "administrator"
     name: "administrator"
     full_name: "Administrator email address"
-    value: "root@parmstrong.ca"
+    value: "root@ironmountain.com"
     category: "general"
     category_name: "General"
     readonly: false
@@ -22,12 +22,12 @@ settings_general:
 
   - description: "URL where your Foreman instance is reachable (see also Provisioning unattended_url)"
     settings_type: "string"
-    default: "https://sat6.parmstrong.ca"
+    default: "https://icus-azp-satvm01.ironmountain.com"
     updated_at: null
     id: "foreman_url"
     name: "foreman_url"
     full_name: "Foreman URL"
-    value: "https://sat6.parmstrong.ca"
+    value: "https://icus-azp-satvm01.ironmountain.com"
     category: "general"
     category_name: "General"
     readonly: false

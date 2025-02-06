@@ -19,8 +19,42 @@ hostgroups_rhisam:
     pxe_loader: "PXELinux BIOS"
     subnet: "labsubnet"
 
-  - name: "RHEL8_CIS2_RAID"
+  - name: "RHEL8_CIS2_RAID_stor"
     parent: "RHEL8base"
     description: "RHEL 8 SOE for CIS Server 2 compliance template"
     ptable: "RHEL_Server_Compliance_Encrypted_RAID"
     organization: "{{ satellite_organization }}"
+    activation_keys: "SOE_RHEL8"
+    parameters:
+      - name: "binding_json"
+        parameter_type: "string"
+        value: '{"t":3,"pins":{"tpm2":{"hash":"sha256","key":"ecc"},"tang":[{"url":"http://10.161.28.31:8080"},{"url":"http://10.161.28.32:8080"},{"url":"http://10.161.28.33:8080"},{"url":"http://10.161.28.34:8080"},{"url":"http://10.161.28.35:8080"}]}}'
+      - name: "binding_type"
+        parameter_type: "string"
+        value: "sss"
+      - name: "enc_target_drives"
+        parameter_type: "string"
+        value: "'/dev/disk/by-id/md-name-root'"
+      - name: "use_NBDE"
+        parameter_type: "boolean"
+        value: "true"
+
+  - name: "RHEL8_CIS2_RAID_meta"
+    parent: "RHEL8base"
+    description: "RHEL 8 SOE for CIS Server 2 compliance template"
+    ptable: "RHEL_Server_Compliance_Encrypted_RAID"
+    organization: "{{ satellite_organization }}"
+    activation_keys: "SOE_RHEL8"
+    parameters:
+      - name: "binding_json"
+        parameter_type: "string"
+        value: '{"t":3,"pins":{"tpm2":{"hash":"sha256","key":"ecc"},"tang":[{"url":"http://10.161.28.31:8080"},{"url":"http://10.161.28.32:8080"},{"url":"http://10.161.28.33:8080"},{"url":"http://10.161.28.34:8080"},{"url":"http://10.161.28.35:8080"}]}}'
+      - name: "binding_type"
+        parameter_type: "string"
+        value: "sss"
+      - name: "enc_target_drives"
+        parameter_type: "string"
+        value: '["/dev/disk/by-id/md-name-root","/dev/nvme0n1p1","/dev/nvme1n1p1"]'
+      - name: "use_NBDE"
+        parameter_type: "boolean"
+        value: "true"
