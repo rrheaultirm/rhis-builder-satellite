@@ -1,2 +1,3 @@
 ansible.cfg
 rhis-builder-satellite.code-workspace
+host_vars/icus-*
