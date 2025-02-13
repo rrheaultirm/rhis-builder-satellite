@@ -8,7 +8,7 @@ satellite_initial_location: "Default Location"
 satellite_initial_organization: "Default Organization"
 satellite_location: "{{ satellite_initial_location }}"
 satellite_organization: "{{ satellite_initial_organization }}"
-satellite_domain: "ironcloud.com"
+satellite_domain: "ironmountain.com"
 satellite_url: "https://{{ satellite_fqdn }}"
 satellite_validate_certs: false
 satellite_admin_email: "{{ satellite_admin_username }}@{{ satellite_domain }}"

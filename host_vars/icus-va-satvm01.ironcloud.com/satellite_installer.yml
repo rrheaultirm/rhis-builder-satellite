@@ -14,7 +14,7 @@ sat_installer_options:
   - '--enable-foreman-compute-vmware'
   - '--foreman-proxy-dns true'
   - '--foreman-proxy-dns-managed true'
-  - '--foreman-proxy-dns-zone ironcloud.com'
+  - '--foreman-proxy-dns-zone ironmountain.com'
   - '--foreman-proxy-dns-reverse 38.160.10.in-addr.arpa'
   - '--foreman-proxy-http true'
   - '--foreman-proxy-registration true'
