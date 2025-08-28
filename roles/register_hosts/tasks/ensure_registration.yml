@@ -1,0 +1,35 @@
+---
+
+- name: "Ensure registration to Satellite"
+  redhat.satellite.registration_command:
+    username: "{{ satellite_username | default(omit) }}"
+    password: "{{ satellite_password | default(omit) }}"
+    use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
+    server_url: "{{ satellite_url }}"
+    organization: "{{ satellite_organization | default(omit) }}"
+    location: "{{ satellite_existing_host.location | default(omit) }}"
+    validate_certs: "{{ satellite_validate_certs }}"
+    activation_keys: "{{ satellite_existing_host.activation_keys }}"
+    ca_path: "{{ satellite_existing_host.ca_path | default(omit) }}"
+    force: "{{ satellite_existing_host.force | default(omit) }}"
+    hostgroup: "{{ satellite_existing_host.hostgroup | default(omit) }}"
+    ignore_subman_errors: "{{ satellite_existing_host.ignore_subman_errors | default(omit) }}"
+    insecure: "{{ satellite_existing_host.insecure | default(omit) }}"
+    jwt_expiration: "{{ satellite_existing_host.jwt_expiration | default(omit) }}"
+    lifecycle_environment: "{{ satellite_existing_host.lifecycle_environment | default(omit) }}"
+    operatingsystem: "{{ satellite_existing_host.operatingsystem | default(omit) }}"
+    packages: "{{ satellite_existing_host.packages | default(omit) }}"
+    remote_execution_interface: "{{ satellite_existing_host.remote_execution_interface | default(omit) }}"
+    repo_gpg_key_url: "{{ satellite_existing_host.repo_gpg_key_url | default(omit) }}"
+    setup_insights: "{{ satellite_existing_host.setup_insights | default(omit) }}"
+    setup_remote_execution: "{{ satellite_existing_host.setup_remote_execition | default(omit) }}"
+    setup_remote_execution_pull: "{{ satellite_existing_host.setup_remote_execution_pull | default(omit) }}"
+    smart_proxy: "{{ satellite_existing_host. | default(omit) }}"
+    update_packages: "{{ satellite_existing_host. | default(omit) }}"
+  register: registration_command
+
+- name: "Perform registration" # noqa command-instead-of-shell
+  ansible.builtin.shell:       # This has pipes
+    cmd: "{{ command.registration_command }}"
+  register: registration_result
+  changed_when: registration_result.rc == 0

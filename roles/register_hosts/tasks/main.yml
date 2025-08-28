@@ -1,0 +1,12 @@
+#  Register a list of existing hosts.
+
+- name: "Ensure the existing hosts are registered"
+  when: "satellite_existing_hosts is defined and satellite_existing_hosts | length > 0"
+  ansible.builtin.include_tasks: "ensure_registration.yml"
+  loop: "{{ satellite_existing_hosts }}"
+  loop_control:
+    loop_var: satellite_existing_host
+  no_log: true
+  tags:
+    - tags_rhisam
+    - tags_existing_hosts
