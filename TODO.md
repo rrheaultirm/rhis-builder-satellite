@@ -27,3 +27,5 @@
 #   - part 2 - post content config
 
 # see provisioner for other tasks related to collections and other content.
+
+# Add keycloak integration to satellite
