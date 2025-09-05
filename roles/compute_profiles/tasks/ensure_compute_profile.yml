@@ -7,7 +7,7 @@
     password: "{{ satellite_password | default(omit) }}"
     use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
     server_url: "{{ satellite_url }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     name: "{{ compute_profile.name }}"
     updated_name: "{{ compute_profile.updated_name | default(omit) }}"
     state: "{{ compute_profile.state | default(omit) }}"

@@ -8,7 +8,7 @@
     server_url: "{{ satellite_url }}"
     organization: "{{ satellite_organization | default(omit) }}"
     location: "{{ satellite_existing_host.location | default(omit) }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     activation_keys: "{{ satellite_existing_host.activation_keys }}"
     ca_path: "{{ satellite_existing_host.ca_path | default(omit) }}"
     force: "{{ satellite_existing_host.force | default(omit) }}"

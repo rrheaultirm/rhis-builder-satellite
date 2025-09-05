@@ -19,7 +19,7 @@
         gfl_sat_username: "{{ satellite_username }}"
         gfl_sat_password: "{{ satellite_password }}"
         gfl_sat_server_url: "{{ satellite_server_url }}"
-        gfl_sat_validate_certs: "{{ satellite_validate_certs }}"
+        gfl_sat_validate_certs: "{{ satellite_validate_certs | default(omit) }}"
         gfl_sat_organization: "{{ host.organization | default(omit) }}"
         gfl_sat_params: "{{ host.params | default(omit) }}"
         gfl_sat_resource: "{{ discovered_hosts_resource }}"
@@ -91,7 +91,7 @@
     mac: "{{ target_mac }}"
     build: true
     state: present
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     compute_attributes:
       start: "1"
     ip: "{{ host.boot_ip | default(omit) }}"
@@ -110,7 +110,7 @@
     user: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     force_basic_auth: true
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     status_code: 200
     headers:
       Content-Type: application/json
@@ -132,7 +132,7 @@
     user: "{{ satellite_username }}"
     password: "{{ satellite_password }}"
     force_basic_auth: true
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     status_code: 200
     headers:
       Content-Type: application/json

@@ -23,7 +23,7 @@
     use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
     server_url: "{{ satellite_url }}"
     organization: "{{ satellite_organization }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     name: "{{ repository_set.name | default(omit) }}"
     product: "{{ repository_set.product | default(omit) }}"
     repositories: "{{ repository_set.repository_list }}"
@@ -36,7 +36,7 @@
     password: "{{ satellite_password }}"
     server_url: "{{ satellite_url }}"
     organization: "{{ satellite_organization }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     name: "{{ repository_set.name | default(omit) }}"
     product: "{{ repository_set.product | default(omit) }}"
     all_repositories: true

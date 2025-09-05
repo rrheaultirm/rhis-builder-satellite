@@ -7,7 +7,7 @@
     use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
     server_url: "{{ satellite_url }}"
     organization: "{{ satellite_organization }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     name: "{{ product_plan.name }}"
     sync_plan: "{{ product_plan.plan }}"
     state: present

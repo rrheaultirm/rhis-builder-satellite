@@ -13,7 +13,7 @@
 #    password: "{{ satellite_password | default(omit) }}"
 #    use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
 #    server_url: "{{ satellite_url }}"
-#    validate_certs: "{{ satellite_validate_certs }}"
+#    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
 #    name: "{{ scap_policy.name }}"
 #    scap_file: "{{ scap_policy.scap_file | defautl(omit) }}"
 #    locations: "{{ scap_policy.locations | default(omit) }}"

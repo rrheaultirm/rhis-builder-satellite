@@ -14,7 +14,7 @@
         inputs:
           "action: wipe"
         search_query: "name = {{ host.delete_host }}"
-        validate_certs: "{{ satellite_validate_certs }}"
+        validate_certs: "{{ satellite_validate_certs | default(omit) }}"
 
     - name: "Delete the host"
       redhat.satellite.host:
@@ -25,7 +25,7 @@
         location: "{{ host.location }}"
         name: "{{ host.delete_host }}"
         state: absent
-        validate_certs: "{{ satellite_validate_certs }}"
+        validate_certs: "{{ satellite_validate_certs | default(omit) }}"
 
     # for baremetal we invoke shutdown 1, for vm and cloud systems it can take a bit to deprovision
     - name: "Wait for host to be deleted"

@@ -18,7 +18,7 @@
     password: "{{ satellite_password | default(omit) }}"
     use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
     server_url: "{{ satellite_url }}"
-    validate_certs: "{{ satellite_validate_certs }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     audit_comment: "{{ job_template.audit_comment | default(omit) }}"
     file_name: "{{ job_template.path }}.out"
     job_category: "{{ job_template.job_category | default(omit) }}"
