@@ -19,6 +19,7 @@
     subscriptions: "{{ activation_key.subscriptions | default(omit) }}"
     max_hosts: "{{ activation_key.max_hosts | default(omit) }}"
     unlimited_hosts: "{{ activation_key.unlimited_hosts | default(omit) }}"
+    purpose_addons: "{{ activation_key.purpose_addons | default(omit) }}"
     purpose_role: "{{ activation_key.purpose_role | default(omit) }}"
     purpose_usage: "{{ activation_key.purpose_usage | default(omit) }}"
     release_version: "{{ activation_key.release_version | default(omit) }}"
