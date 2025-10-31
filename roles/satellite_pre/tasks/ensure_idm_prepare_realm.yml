@@ -1,0 +1,75 @@
+---
+# Tell the yaml linter to ignore long lines
+# yamllint disable rule:line-length
+
+# Clean up the existing keytabs
+# Determine if the realm-capsule user exists
+# If the user exists, get the existing keytab
+# If the user does not exist, call prepare realm - this pulls the keytab
+# Copy the keytab to the appropriate locations.
+
+- name: "Assume the foreman proxy realm user does not exist"
+  ansible.builtin.set_fact:
+    realm_user_exists: false
+
+- name: "Clean up old keytabs"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/etc/foreman-proxy/freeipa.keytab"
+    - "/root/freeipa.keytab"
+
+- name: "Determine if the foreman-proxy realm user exists - normally realm-capsule" # noqa: command-instead-of-shell risky-shell-pipe
+  ansible.builtin.shell: "echo '{{ ipa_admin_password }}' | kinit {{ ipa_admin_principal }}; echo '{{ ipa_admin_password }}' | ipa user-find {{ foreman_proxy_realm_principal }}"
+  register: fpr_user_find
+  changed_when: fpr_user_find.rc == 0
+  failed_when: (fpr_user_find.stdout_lines | length) == 0
+
+- name: "Evaluate search"
+  when: ('1 user matched') in fpr_user_find.stdout
+  ansible.builtin.set_fact:
+    realm_user_exists: true
+
+- name: "If the foreman-proxy realm user exists, retrieve the keytab"
+  when: realm_user_exists
+  ansible.builtin.include_tasks: 'get_foreman_proxy_keytab.yml'
+
+- name: "If the foreman-proxy realm user does not exist, prepare the realm"
+  when: not realm_user_exists
+  block:
+
+    - name: "Setup satellite realm user"  # noqa: command-instead-of-shell risky-shell-pipe
+      ansible.builtin.shell: "echo '{{ ipa_admin_password }}' | kinit {{ ipa_admin_principal }}; echo '{{ ipa_admin_password }}' | /usr/sbin/foreman-prepare-realm {{ ipa_admin_principal }} {{ foreman_proxy_realm_principal }}"
+      register: fpr_prepare_realm
+      changed_when: fpr_prepare_realm.rc == 0
+
+    - name: "Wait for keytab generation and retrieval"
+      ansible.builtin.wait_for:
+        path: "/root/freeipa.keytab"
+
+- name: "Ensure the foreman-proxy directory exists"
+  ansible.builtin.file:
+    path: "/etc/foreman-proxy"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: "Move the keytab to the foreman-proxy directory"
+  ansible.builtin.copy:
+    src: "/root/freeipa.keytab"
+    dest: /etc/foreman-proxy/freeipa.keytab
+    owner: foreman-proxy
+    group: foreman-proxy
+    mode: "0600"
+    remote_src: true
+
+- name: "Test the new keytab" # noqa: no-changed-when risky-shell-pipe
+  ansible.builtin.command: "kinit -kt /etc/foreman-proxy/freeipa.keytab {{ foreman_proxy_realm_principal }}"
+  register: result
+
+- name: "Assert Success"
+  ansible.builtin.assert:
+    that:
+      - result.stdout == ""

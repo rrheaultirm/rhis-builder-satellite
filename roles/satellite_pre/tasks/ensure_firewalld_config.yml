@@ -19,6 +19,11 @@
     enabled: true
     masked: false
 
+- name: "Set the primary interface for Satellite communication"
+  when: override_iface is defined and (sat_override_iface | length) > 0
+  ansible.builtin.set_fact:
+    sat_firewalld_interface: "{{ override_iface }}"
+
 - name: "Configure Firewalld services and ports for Satellite"
   ansible.builtin.include_role:
     name: "redhat.rhel_system_roles.firewall"

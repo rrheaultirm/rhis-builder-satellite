@@ -1,0 +1,35 @@
+---
+
+- name: "Fetch existing httpd keytab to server" # noqa: no-changed-when
+  ansible.builtin.command:
+    cmd: "ipa-getkeytab -p HTTP/{{ ansible_fqdn }} -s {{ ipaserver_fqdn }} -k /root/httpd.keytab" # noqa: yaml[line-length]
+  register: gfhk_getkeytab
+  changed_when: gfhk_getkeytab.rc == 0
+  no_log: false
+
+# system_u:object_r:httpd_config_t:s0
+- name: "Create target directory"
+  ansible.builtin.file:
+    path: "/etc/httpd/conf"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+    seuser: "system_u"
+    serole: "object_r"
+    setype: "httpd_config_t"
+    selevel: "s0"
+
+# apache root system_u:object_r:etc_t:s0
+- name: "Move keytab to httpd directory"
+  ansible.builtin.copy:
+    src: "/root/httpd.keytab"
+    dest: "/etc/httpd/conf/httpd.keytab"
+    remote_src: true
+    owner: apache
+    group: root
+    mode: "0600"
+    seuser: "system_u"
+    serole: "object_r"
+    setype: "etc_t"
+    selevel: "s0"

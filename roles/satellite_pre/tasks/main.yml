@@ -45,6 +45,23 @@
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
 
+- name: "Use non-idm certificates"
+  when:
+    - not satellite_pre_use_idm
+    - use_non_idm_certs
+  ansible.builtin.include_tasks: "ensure_non_idm_certs.yml"
+  tags:
+    - tags_rhisam
+    - tags_satellite_pre
+    - tags_satellite_pre_non_idm_certs
+
+- name: "Validate certificates for use with satellite"
+  when: satellite_pre_use_idm or use_non_idm_certs
+  ansible.builtin.include_tasks: "check_satellite_certs.yml"
+  tags:
+    - tags_rhisam
+    - tags_satellite_pre
+    - tags_satellite_pre_non_idm_certs
 
 - name: "Tune system for satellite"
   when: apply_standard_tuning
