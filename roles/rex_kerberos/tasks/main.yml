@@ -40,3 +40,13 @@
     owner: "{{ rex_executor }}"
     group: "{{ rex_executor }}"
     mode: "0640"
+
+- name: "Validate the keytab" # noqa: no-changed-when risky-shell-pipe
+  ansible.builtin.command: "kinit -kt {{ rex_keytab_path }} {{ foreman_proxy_realm_principal }}"
+  register: rex_keytab_result
+  changed_when: rex_keytab_result.rc == 0
+
+- name: "Assert Success"
+  ansible.builtin.assert:
+    that:
+      - rex_keytab_result.stdout == ""
