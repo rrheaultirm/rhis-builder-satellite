@@ -20,15 +20,19 @@
     dest: "/root/.hammer/cli.modules.d/foreman.yml"
 
 - name: "Check hammer"
-  ansible.builtin.command: "hammer ping" # noqa: no-changed-when
-  register: output
+  ansible.builtin.command: "hammer ping"
+  register: ping_status
+  changed_when: ping_status.rc == 0
 
-- ansible.builtin.fail: # noqa: name[missing]
-  when: "'Status:          ok' not in output.stdout"
+- name: "Assertion: hammer ping"
+  ansible.builtin.assert:
+    that: "'Status:          ok' in ping_status.stdout"
 
-- name: "Check health" # noqa: no-changed-when
+- name: "Check health"
   ansible.builtin.command: "satellite-maintain health check --label server-ping"
-  register: output
+  register: health_status
+  changed_when: health_status.rc == 0
 
-- ansible.builtin.fail: # noqa: name[missing]
-  when: "'[OK]' not in output.stdout"
+- name: "Assertion: Health"
+  ansible.builtin.assert:
+    that: "'[OK]' in health_status.stdout"
