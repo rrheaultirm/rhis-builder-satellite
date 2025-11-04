@@ -15,28 +15,28 @@
       ansible.builtin.include_vars:
         file: "{{ vault_path }}"
       tags:
-        - tags_init
+        - always
 
     - name: "Load the other variables"
       when: vars_path is defined
       ansible.builtin.include_vars:
         file: "{{ vars_path }}"
       tags:
-        - tags_init
+        - always
 
     - name: "Load the vault variables"
       when: vault_dir is defined
       ansible.builtin.include_vars:
         dir: "{{ vault_dir }}"
       tags:
-        - tags_init
+        - always
 
     - name: "Load the other variables"
       when: vars_dir is defined
       ansible.builtin.include_vars:
         dir: "{{ vars_dir }}"
       tags:
-        - tags_init
+        - always
 
     - name: "Apply role of satellite_pre to {{ ansible_fqdn }}"
       ansible.builtin.include_role:
