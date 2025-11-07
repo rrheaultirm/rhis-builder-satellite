@@ -6,6 +6,8 @@
 # A manifest must be created or a manifest must already exist
 # Manifest creation data is sensitive, so should be vaulted and encrypted.
 
+# We will fail if there are no manifests listed.
+
 - name: "Ensure the manifests are configured in the portal"
   when: "redhat_manifests is defined"
   ansible.builtin.include_tasks: "ensure_redhat_manifest.yml"
@@ -14,6 +16,5 @@
     loop_var: redhat_manifest
   no_log: true
   tags:
-    - tags_rhisam
     - tags_user
     - tags_redhat_manifests

@@ -9,6 +9,5 @@
     loop_var: satellite_subnet
   no_log: true
   tags:
-    - tags_rhisam
     - tags_infrastructure_config
     - tags_subnets

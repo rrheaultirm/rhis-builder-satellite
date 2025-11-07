@@ -8,6 +8,5 @@
     loop_var: gitrepo
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_import_git_repos

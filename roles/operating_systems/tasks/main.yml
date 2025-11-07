@@ -1,6 +1,6 @@
 ---
 
-# Ensure the state of the defined rhisam and user operating systems.
+# Ensure the state of the operating systems.
 
 - name: "Ensure the state of operating systems."
   when: operating_systems is defined and (operating_systems | length) > 0
@@ -10,6 +10,5 @@
     loop_var: "operating_system"
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_operating_systems

@@ -1,5 +1,5 @@
 ---
-# This playbook configures the rhisam product repo sync plans
+# This playbook configures the product repo sync plans
 #
 - name: "Ensure the synchronization plans"
   when: sync_plans is defined and (sync_plans | length) > 0
@@ -9,11 +9,10 @@
     loop_var: sync_plan
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management_config
     - tags_sync_plans
 
-- name: Attach the rhisam synchronization plans to their Products.
+- name: Attach the synchronization plans to their Products.
   when: product_plans is defined and (product_plans | length) > 0
   ansible.builtin.include_tasks: "link_sync_plan.yml"
   loop: "{{ product_plans }}"
@@ -21,7 +20,6 @@
     loop_var: product_plan
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management_config
     - tags_sync_plans
     - tags_attach_sync_plans

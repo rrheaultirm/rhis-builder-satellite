@@ -8,6 +8,5 @@
     loop_var: scap_tailoring_file
   no_log: true
   tags:
-    - tags_rhisam
     - tags_scap_config
     - tags_scap_tailoring_files

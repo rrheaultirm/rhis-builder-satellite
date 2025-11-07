@@ -19,7 +19,6 @@
     status_code: [200, 201]
     timeout: 300
   tags:
-    - tags_rhisam
     - tags_user
     - tags_provisioning_config
     - tags_ansible_import_roles

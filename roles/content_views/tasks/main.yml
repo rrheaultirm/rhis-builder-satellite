@@ -9,7 +9,6 @@
     loop_var: content_view
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_content_views_configure
 
@@ -21,7 +20,6 @@
     loop_var: content_view
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_content_views_publish
 
@@ -33,7 +31,6 @@
     loop_var: composite_content_view
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_composite_content_views_configure
 
@@ -45,6 +42,5 @@
     loop_var: content_view
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_composite_content_views_publish

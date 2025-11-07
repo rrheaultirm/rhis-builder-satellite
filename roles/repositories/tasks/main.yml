@@ -15,7 +15,6 @@
     loop_var: satellite_repository
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_repositories
     - tags_day2

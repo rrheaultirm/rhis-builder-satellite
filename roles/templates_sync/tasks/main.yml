@@ -10,6 +10,5 @@
     loop_var: satellite_template_repo
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_satellite_template_repos

@@ -1,5 +1,5 @@
 ---
-# Configure the rhisam and user repositories
+# Configure the repository sets
 
 - name: "Ensure the state of repository sets"
   when: repository_sets is defined and (repository_sets | length) > 0
@@ -9,6 +9,5 @@
     loop_var: repository_set
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management_config
     - tags_repositories

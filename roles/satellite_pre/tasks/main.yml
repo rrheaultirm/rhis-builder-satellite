@@ -5,35 +5,30 @@
 - name: "Ensure CDN registration"
   ansible.builtin.import_tasks: "ensure_cdn_registration.yml"
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_cdn_registration
 
 - name: "Ensure satellite reposistories are enabled"
   ansible.builtin.import_tasks: "ensure_repositories.yml"
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_repos
 
 - name: "Ensure satellite is using chronyd for time"
   ansible.builtin.import_tasks: "ensure_chronyd.yml"
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_repos
 
 - name: "Ensure satellite firewall ports are configured"
   ansible.builtin.import_tasks: ensure_firewalld_config.yml
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_firewall
 
 - name: "Ensure satellite binaries are installed"
   ansible.builtin.import_tasks: ensure_sat_binaries.yml
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_packages
 
@@ -41,7 +36,6 @@
   when: satellite_pre_use_idm
   ansible.builtin.import_tasks: "ensure_idm_integration.yml"
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
 
@@ -51,7 +45,6 @@
     - use_non_idm_certs
   ansible.builtin.include_tasks: "ensure_non_idm_certs.yml"
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_non_idm_certs
 
@@ -59,7 +52,6 @@
   when: satellite_pre_use_idm or use_non_idm_certs
   ansible.builtin.include_tasks: "check_satellite_certs.yml"
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_non_idm_certs
 
@@ -67,6 +59,5 @@
   when: apply_standard_tuning
   ansible.builtin.import_tasks: "tune_for_satellite.yml"
   tags:
-    - tags_rhisam
     - tags_satellite_pre
     - tags_satellite_pre_tune_for_satellite

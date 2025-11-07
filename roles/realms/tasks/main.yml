@@ -1,5 +1,5 @@
 ---
-# Configure the rhisam and user identity management or AD realms
+# Configure the identity management or AD realms
 
 - name: "Ensure the configuration for realms"
   when: satellite_realms is defined and (satellite_realms | length) > 0
@@ -9,6 +9,5 @@
     loop_var: satellite_realm
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_satellite_realms

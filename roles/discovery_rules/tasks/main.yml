@@ -1,5 +1,5 @@
 ---
-# This task configures the rhisam discovery rules
+# This task configures the discovery rules
 #
 - name: "Ensure the state of discovery rules"
   when: discovery_rules is defined and (discovery_rules | length) > 0
@@ -9,6 +9,5 @@
     loop_var: discovery_rule
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_discovery_rules

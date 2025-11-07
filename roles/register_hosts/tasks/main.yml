@@ -8,5 +8,4 @@
     loop_var: satellite_existing_host
   no_log: true
   tags:
-    - tags_rhisam
     - tags_existing_hosts

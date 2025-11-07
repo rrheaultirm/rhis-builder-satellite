@@ -1,6 +1,6 @@
 ---
 
-- name: "Ensure the user roles for the rhisam configuration"
+- name: "Ensure the user roles"
   when: satellite_roles is defined and (satellite_roles | length) > 0
   ansible.builtin.include_tasks: "ensure_user_role.yml"
   loop: "{{ satellite_roles }}"
@@ -8,6 +8,5 @@
     loop_var: satellite_role
   no_log: true
   tags:
-    - tags_rhisam
     - tags_satellite_management_config
     - tags_satellite_roles

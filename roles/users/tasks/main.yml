@@ -1,6 +1,6 @@
 ---
 
-- name: "Ensure the users for the rhisam configuration"
+- name: "Ensure the users configuration"
   when: satellite_users is defined and (satellite_users | length) > 0
   ansible.builtin.include_tasks: "ensure_user.yml"
   loop: "{{ satellite_users }}"
@@ -8,6 +8,5 @@
     loop_var: satellite_user
   no_log: true
   tags:
-    - tags_rhisam
     - tags_satellite_management_config
     - tags_satellite_users

@@ -8,6 +8,5 @@
     loop_var: scap_content
   no_log: true
   tags:
-    - tags_rhisam
     - tags_scap_config
     - tags_scap_contents

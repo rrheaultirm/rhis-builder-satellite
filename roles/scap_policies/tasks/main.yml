@@ -9,6 +9,5 @@
     loop_var: scap_policy
   no_log: true
   tags:
-    - tags_rhisam
     - tags_scap_config
     - tags_scap_policies

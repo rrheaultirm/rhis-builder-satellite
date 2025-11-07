@@ -16,6 +16,5 @@
     loop_var: custom_product
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_custom_products

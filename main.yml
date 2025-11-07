@@ -257,7 +257,6 @@
         name: compute_profiles
       tags:
         - tags_post_sync
-        - tags_rhisam
         - tags_provisioning_config
         - tags_compute_profiles
 
@@ -300,7 +299,7 @@
         - tags_provisioning_config
         - tags_scap_tailoring_files
 
-    - name: "Configure rhisam hostgroups"
+    - name: "Configure hostgroups"
       ansible.builtin.import_role:
         name: hostgroups
       tags:
@@ -316,7 +315,7 @@
         - tags_provisioning_config
         - tags_scap_policies
 
-    - name: "Configure rhisam discovery rules"
+    - name: "Configure discovery rules"
       ansible.builtin.import_role:
         name: discovery_rules
       tags:

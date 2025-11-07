@@ -8,6 +8,5 @@
     loop_var: satellite_user_group
   no_log: true
   tags:
-    - tags_rhisam
     - tags_satellite_management_config
     - tags_satellite_user_groups

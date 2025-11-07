@@ -9,6 +9,5 @@
     loop_var: content_credential
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management
     - tags_content_credentials

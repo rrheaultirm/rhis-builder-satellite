@@ -1,6 +1,6 @@
 ---
-# rhisam global parameters ensure RHISAM usecases behave appropriately
-# Optional parameters can be added for your usecases
+# rhisam global parameters ensure RHISAM use cases behave appropriately
+# Optional parameters can be added for your use cases
 
 - name: "Configuring the global parameters"
   when: global_parameters is defined and (global_parameters | length) > 0
@@ -10,6 +10,5 @@
     loop_var: global_parameter
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_global_parameters

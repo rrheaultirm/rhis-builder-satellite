@@ -8,6 +8,5 @@
     loop_var: lifecycle_environment
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management_config
     - tags_lifecycle_environments

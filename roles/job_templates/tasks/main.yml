@@ -17,6 +17,5 @@
     loop_var: job_template
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_job_templates

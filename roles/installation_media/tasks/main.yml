@@ -10,6 +10,5 @@
     loop_var: "installation_medium"
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_installation_media

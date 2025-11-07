@@ -1,6 +1,6 @@
 ---
 
-- name: "Configure rhisam virtwho configurations"
+- name: "Configure virtwho configurations"
   when: virtwho_configs is defined and (virtwho_configs | length) > 0
   ansible.builtin.include_tasks: "ensure_virtwho_config.yml"
   loop: "{{ virtwho_configs }}"
@@ -8,6 +8,5 @@
     loop_var: "virtwho_config"
   no_log: true
   tags:
-    - tags_rhisam
     - tags_content_management_config
     - tags_virtwho_configs

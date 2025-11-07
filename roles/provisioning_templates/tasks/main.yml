@@ -14,6 +14,5 @@
     loop_var: provisioning_template
   no_log: true
   tags:
-    - tags_rhisam
     - tags_provisioning_config
     - tags_partition_tables
