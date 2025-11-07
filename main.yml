@@ -66,7 +66,7 @@
         - tags_configure_hammer
         - tags_pre_sync
 
-    - name: "Ensure Satellite manifest configuration"
+    - name: "Ensure Satellite manifest configuration on console.redhat.com"
       ansible.builtin.import_role:
         name: redhat_manifests
       tags:
@@ -74,7 +74,7 @@
         - tags_manifest
         - tags_pre_sync
 
-    - name: "Ensure Satellite manifest configuration"
+    - name: "Ensure Satellite manifest configuration in target Satellite"
       ansible.builtin.import_role:
         name: subscription_manifests
       tags:

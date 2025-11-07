@@ -4,6 +4,10 @@
 # it can be used to change the location of where the system gets content. e.g. alternate content source
 # see: repository_url
 
+# NOTE: we have consolitdated the configuration into the redhat_manifests dictionary
+# this eliminates configuration drift between generated and user provided manifests
+# see the configuration notes in manifests.yml under the satellite example server for rhis-builder-inventory
+
 - name: "Ensure state of the subscription manifest - {{ subscription_manifest.organization }}"
   redhat.satellite.subscription_manifest:
     username: "{{ satellite_username | default(omit) }}"

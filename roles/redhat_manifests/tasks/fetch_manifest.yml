@@ -6,7 +6,8 @@
     path: "{{ redhat_manifest.path }}"
     state: absent
 
-- name: "Download the specified manifest"
+- name: "Download the specified manifest from the portal if generating"
+  when: redhat_manifest.generate
   redhat.satellite.redhat_manifest:
     portal: "{{ redhat_manifest.portal_url }}"
     username: "{{ redhat_manifest.cdn_username }}"
@@ -14,3 +15,12 @@
     validate_certs: "{{ redhat_manifest.validate_certs }}"
     name: "{{ redhat_manifest.name }}"
     path: "{{ redhat_manifest.path }}"
+
+- name: "Upload the specified manifest from source if user provided"
+  when: not redhat_manifest.generate
+  ansible.builtin.file:
+    src: "{{ redhat_manifest.source }}"
+    dest: "{{ redhat_manifest.path }}"
+    owner: "root"
+    group: "root"
+    mode: "0600"

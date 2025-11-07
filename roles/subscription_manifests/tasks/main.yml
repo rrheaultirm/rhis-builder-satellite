@@ -5,10 +5,10 @@
 #  2. Uploading, refreshing and replacing manifests on the Satellite
 
 # This module only deals with item 2.
-# The RHISAM doesn't provide a manifest.
-# All manifests are user manifests.
+# A manifest must be created or a manifest must already exist
+# Manifest creation data is sensitive, so should be vaulted and encrypted.
 
-- name: "Ensure the manifests state"
+- name: "Ensure the satellite is configured with manifests"
   when: redhat_manifests is defined and (redhat_manifests | length) > 0
   ansible.builtin.include_tasks: "ensure_subscription_manifest.yml"
   loop: "{{ redhat_manifests }}"
