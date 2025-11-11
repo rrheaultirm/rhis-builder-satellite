@@ -1,7 +1,7 @@
 ---
 
 - name: "Configure the git repos to replicate"
-  when: "git_repos is defined"
+  when: "git_repos is defined and (git_repos | length) > 0"
   ansible.builtin.include_tasks: "ensure_clone_git_repos.yml"
   loop: "{{ git_repos }}"
   loop_control:
