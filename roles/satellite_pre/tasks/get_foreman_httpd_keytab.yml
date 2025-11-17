@@ -10,7 +10,7 @@
 # system_u:object_r:httpd_config_t:s0
 - name: "Create target directory"
   ansible.builtin.file:
-    path: "/etc/httpd/conf"
+    path: "/etc/httpd/"
     state: "directory"
     owner: "root"
     group: "root"
@@ -20,14 +20,14 @@
     setype: "httpd_config_t"
     selevel: "s0"
 
-# apache root system_u:object_r:etc_t:s0
+# apache apache system_u:object_r:etc_t:s0
 - name: "Move keytab to httpd directory"
   ansible.builtin.copy:
     src: "/root/httpd.keytab"
-    dest: "/etc/httpd/conf/httpd.keytab"
+    dest: "/etc/httpd/httpd.keytab"
     remote_src: true
     owner: apache
-    group: root
+    group: apache
     mode: "0600"
     seuser: "system_u"
     serole: "object_r"
