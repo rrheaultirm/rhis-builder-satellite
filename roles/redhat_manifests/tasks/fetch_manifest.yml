@@ -18,7 +18,7 @@
 
 - name: "Upload the specified manifest from source if user provided"
   when: not redhat_manifest.generate
-  ansible.builtin.file:
+  ansible.builtin.copy:
     src: "{{ redhat_manifest.source }}"
     dest: "{{ redhat_manifest.path }}"
     owner: "root"
