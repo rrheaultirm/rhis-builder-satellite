@@ -167,6 +167,7 @@
         name: "installation_media"
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_media
 
@@ -175,6 +176,7 @@
         name: partition_tables
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_ptables
 
@@ -183,6 +185,7 @@
         name: provisioning_templates
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_provisioning_templates
 
@@ -191,6 +194,7 @@
         name: templates_sync
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_templates_sync
 
@@ -199,6 +203,7 @@
         name: operating_systems
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_operating_systems
 
@@ -207,6 +212,7 @@
         name: activation_keys
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_activation_keys
 
@@ -215,6 +221,7 @@
         name: domains
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_network
         - tags_domains
@@ -224,6 +231,7 @@
         name: realms
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_network
         - tags_realms
@@ -233,6 +241,7 @@
         name: subnets
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_network
         - tags_subnets
@@ -241,6 +250,7 @@
       ansible.builtin.import_tasks: "tasks/build_pxe_linux_defaults.yml"
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_pxe_defaults
 
@@ -249,6 +259,7 @@
         name: compute_resources
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_compute_resources
 
@@ -257,6 +268,7 @@
         name: compute_profiles
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_compute_profiles
 
@@ -265,6 +277,7 @@
         name: virtwho_configs
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_virt_who
 
@@ -273,14 +286,18 @@
         name: imported_git_repos
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
+        - tags_scap
         - tags_clone_git_repos
 
     - name: "Ensure import ansible roles"
       ansible.builtin.import_tasks: "tasks/ensure_import_roles.yml"
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
+        - tags_scap
         - tags_ansible_import_roles
 
     - name: "Configure SCAP content files"
@@ -288,7 +305,9 @@
         name: scap_contents
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
+        - tags_scap
         - tags_scap_contents
 
     - name: "Configure SCAP tailoring files"
@@ -296,7 +315,9 @@
         name: scap_tailoring_files
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
+        - tags_scap
         - tags_scap_tailoring_files
 
     - name: "Configure hostgroups"
@@ -304,6 +325,7 @@
         name: hostgroups
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_host_groups
 
@@ -312,7 +334,9 @@
         name: scap_policies
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
+        - tags_scap
         - tags_scap_policies
 
     - name: "Configure discovery rules"
@@ -320,6 +344,7 @@
         name: discovery_rules
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_discovery_rules
 
@@ -328,6 +353,7 @@
         name: global_parameters
       tags:
         - tags_post_sync
+        - tags_post_publication
         - tags_provisioning_config
         - tags_global_parameters
 
@@ -336,21 +362,25 @@
         name: settings
       tags:
         - tags_post_sync
-        - tags_settings
-        - tags_general_settings
+        - tags_post_publication
+        - tags_satellite_settings
 
     - name: "Configure satellite user roles"
       ansible.builtin.import_role:
         name: user_roles
       tags:
         - tags_post_sync
-        - tags_settings
+        - tags_post_publication
+        - tags_rbac_config
         - tags_user_roles
 
     - name: "Configure satellite users"
       ansible.builtin.import_role:
         name: users
       tags:
+        - tags_post_sync
+        - tags_post_publication
+        - tags_rbac_config
         - tags_users
 
     - name: "Configure satellite user groups"
@@ -358,7 +388,8 @@
         name: user_groups
       tags:
         - tags_post_sync
-        - tags_settings
+        - tags_post_publication
+        - tags_rbac_config
         - tags_user_groups
 
     - name: "Configure satellite external user groups"
@@ -366,7 +397,8 @@
         name: user_groups_external
       tags:
         - tags_post_sync
-        - tags_settings
+        - tags_post_publication
+        - tags_rbac_config
         - tags_user_groups_external
 
 # End of Satellite Configuration
