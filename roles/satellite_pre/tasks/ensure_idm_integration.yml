@@ -9,22 +9,26 @@
   ansible.builtin.import_tasks: ensure_idm_registered.yml
   tags:
     - tags_satellite_pre
-    - tags_satellite_pre_idmclient
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Ensure satellite HTTP service certificates are generated"
   ansible.builtin.import_tasks: ensure_idm_service_certs.yml
   tags:
     - tags_satellite_pre
-    - tags_satellite_pre_gen_certs
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Retrieve the HTTP service keytab"
   ansible.builtin.import_tasks: get_foreman_httpd_keytab.yml
   tags:
     - tags_satellite_pre
-    - tags_satellite_pre_httpd_keytab
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Ensure identity management realm is prepared for use with Satellite"
   ansible.builtin.import_tasks: ensure_idm_prepare_realm.yml
   tags:
     - tags_satellite_pre
-    - tags_satellite_pre_prepare_realm
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite

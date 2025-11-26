@@ -8,9 +8,22 @@
     name: "{{ sat_repository_ids }}"
     state: enabled
     purge: true
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
 
 - name: "Ensure the release is not set" # noqa: no-changed-when
   ansible.builtin.command: "subscription-manager release --unset"
+  register: sub_man_release_unset
+  changed_when: sub_man_release_unset.rc == 0
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
 
 - name: "Clean the yum metadata" # noqa: no-changed-when
-  ansible.builtin.command: "yum clean all"
+  ansible.builtin.command: "dnf clean all"
+  register: dnf_clean_all
+  changed_when: dnf_clean_all.rc == 0
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration

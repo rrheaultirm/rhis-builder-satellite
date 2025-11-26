@@ -8,6 +8,10 @@
     update_policy: "{{ foreman_proxy_bind_update_policy }}"
     allow_sync_ptr: true
     dynamic_update: true
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Set up IdM reverse lookup zone to allow foreman proxy to update DNS"
   redhat.rhel_idm.ipadnszone:
@@ -17,3 +21,7 @@
     update_policy: "{{ foreman_proxy_bind_update_policy_reverse }}"
     allow_sync_ptr: true
     dynamic_update: true
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite

@@ -11,6 +11,10 @@
     serole: "object_r"
     setype: "cert_t"
     selevel: "s0"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Copy the certificate to the server"
   ansible.builtin.copy:
@@ -19,6 +23,10 @@
     owner: "root"
     group: "root"
     mode: "0600"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Copy the certificate key to the server"
   ansible.builtin.copy:
@@ -27,6 +35,10 @@
     owner: "root"
     group: "root"
     mode: "0600"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Copy the CA cert to the server"
   ansible.builtin.copy:
@@ -35,3 +47,7 @@
     owner: "root"
     group: "root"
     mode: "0600"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite

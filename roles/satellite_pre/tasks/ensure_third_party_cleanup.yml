@@ -10,6 +10,8 @@
     file_type: "file"
     patterns: "*.repo"
   register: repo_files
+  tags:
+    - tags_satellite_pre
 
 - name: "Disable all third party repos"
   ansible.builtin.copy:
@@ -22,6 +24,8 @@
   loop: "{{ repo_files.files }}"
   loop_control:
     loop_var: repo_file
+  tags:
+    - tags_satellite_pre
 
 # Satellite is an appliance-like deployment. It must be registered to the CDN with CDN repos.
 # uninstall any RHUI client
@@ -29,6 +33,8 @@
   ansible.builtin.yum:
     list: "*rhui*"
   register: pkg_list
+  tags:
+    - tags_satellite_pre
 
 - name: "Remove the RHUI client if it exists"
   when: pkg_list.results | selectattr( "yumstate", "match", "installed" ) | list | length != 0
@@ -38,15 +44,21 @@
   loop: "{{ pkg_list.results }}"
   loop_control:
     loop_var: rhui_package
+  tags:
+    - tags_satellite_pre
 
 # clear the dnf/yum cache
 - name: "Clean up the dnf cache"
   ansible.builtin.command:
     cmd: "dnf clean all"
   changed_when: true
+  tags:
+    - tags_satellite_pre
 
 # ensure subscription-manager/rhsm is managing repos
 - name: "Update the subscription manager configuration to ensure rhsm manages repos"
   ansible.builtin.command:
     cmd: "subscription-manager config --rhsm.manage_repos=1"
   changed_when: true
+  tags:
+    - tags_satellite_pre

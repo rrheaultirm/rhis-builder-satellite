@@ -6,6 +6,10 @@
   register: gfhk_getkeytab
   changed_when: gfhk_getkeytab.rc == 0
   no_log: false
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 # system_u:object_r:httpd_config_t:s0
 - name: "Create target directory"
@@ -19,6 +23,10 @@
     serole: "object_r"
     setype: "httpd_config_t"
     selevel: "s0"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 # apache apache system_u:object_r:etc_t:s0
 - name: "Move keytab to httpd directory"
@@ -33,3 +41,7 @@
     serole: "object_r"
     setype: "etc_t"
     selevel: "s0"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite

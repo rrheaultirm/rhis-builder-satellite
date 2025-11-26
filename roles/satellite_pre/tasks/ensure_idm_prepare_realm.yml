@@ -11,6 +11,10 @@
 - name: "Assume the foreman proxy realm user does not exist"
   ansible.builtin.set_fact:
     realm_user_exists: false
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Clean up old keytabs"
   ansible.builtin.file:
@@ -19,21 +23,37 @@
   loop:
     - "/etc/foreman-proxy/freeipa.keytab"
     - "/root/freeipa.keytab"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Determine if the foreman-proxy realm user exists - normally realm-capsule" # noqa: command-instead-of-shell risky-shell-pipe
   ansible.builtin.shell: "echo '{{ ipa_admin_password }}' | kinit {{ ipa_admin_principal }}; echo '{{ ipa_admin_password }}' | ipa user-find {{ foreman_proxy_realm_principal }}"
   register: fpr_user_find
   changed_when: fpr_user_find.rc == 0
   failed_when: (fpr_user_find.stdout_lines | length) == 0
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Evaluate search"
   when: ('1 user matched') in fpr_user_find.stdout
   ansible.builtin.set_fact:
     realm_user_exists: true
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "If the foreman-proxy realm user exists, retrieve the keytab"
   when: realm_user_exists
   ansible.builtin.include_tasks: 'get_foreman_proxy_keytab.yml'
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "If the foreman-proxy realm user does not exist, prepare the realm"
   when: not realm_user_exists
@@ -43,10 +63,18 @@
       ansible.builtin.shell: "echo '{{ ipa_admin_password }}' | kinit {{ ipa_admin_principal }}; echo '{{ ipa_admin_password }}' | /usr/sbin/foreman-prepare-realm {{ ipa_admin_principal }} {{ foreman_proxy_realm_principal }}"
       register: fpr_prepare_realm
       changed_when: fpr_prepare_realm.rc == 0
+      tags:
+        - tags_satellite_pre
+        - tags_satellite_pre_idm_integration
+        - tags_disconnected_satellite
 
     - name: "Wait for keytab generation and retrieval"
       ansible.builtin.wait_for:
         path: "/root/freeipa.keytab"
+      tags:
+        - tags_satellite_pre
+        - tags_satellite_pre_idm_integration
+        - tags_disconnected_satellite
 
 - name: "Ensure the foreman-proxy directory exists"
   ansible.builtin.file:
@@ -55,6 +83,10 @@
     owner: "root"
     group: "root"
     mode: "0755"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Move the keytab to the foreman-proxy directory"
   ansible.builtin.copy:
@@ -64,12 +96,24 @@
     group: foreman-proxy
     mode: "0600"
     remote_src: true
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Test the new keytab" # noqa: no-changed-when risky-shell-pipe
   ansible.builtin.command: "kinit -kt /etc/foreman-proxy/freeipa.keytab {{ foreman_proxy_realm_principal }}"
   register: result
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Assert Success"
   ansible.builtin.assert:
     that:
       - result.stdout == ""
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite

@@ -3,6 +3,10 @@
   ansible.builtin.dnf:
     name: firewalld
     state: present
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_firewall
+    - tags_disconnected_satellite
 
 - name: "Ensure that iptables is not running or configured" # noqa: ignore-errors
   ansible.builtin.systemd:
@@ -11,6 +15,10 @@
     enabled: false
     masked: true
   ignore_errors: true
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_firewall
+    - tags_disconnected_satellite
 
 - name: "Ensure that the Firewalld service is enabled and running"
   ansible.builtin.systemd:
@@ -18,11 +26,19 @@
     state: started
     enabled: true
     masked: false
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_firewall
+    - tags_disconnected_satellite
 
 - name: "Set the primary interface for Satellite communication"
   when: override_iface is defined and (sat_override_iface | length) > 0
   ansible.builtin.set_fact:
     sat_firewalld_interface: "{{ override_iface }}"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_firewall
+    - tags_disconnected_satellite
 
 - name: "Configure Firewalld services and ports for Satellite"
   ansible.builtin.include_role:
@@ -41,3 +57,7 @@
       - { service: "{{ sat_firewalld_services }}",
           permanent: true,
           state: enabled }
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_firewall
+    - tags_disconnected_satellite

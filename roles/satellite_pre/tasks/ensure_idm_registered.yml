@@ -4,13 +4,25 @@
   ansible.builtin.lineinfile:
     path: "/etc/hosts"
     line: "{{ ipa_client_dns_servers }}    {{ ipa_server_fqdn }}"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Ensure idm server is our DNS resolver"
   ansible.builtin.lineinfile:
     path: "/etc/resolv.conf"
     line: "nameserver {{ ipa_client_dns_servers }}"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 # role will install client
 - name: "Ensure the client configuration"
   ansible.builtin.include_role:
     name: "redhat.rhel_idm.ipaclient"
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite

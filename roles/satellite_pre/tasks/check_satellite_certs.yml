@@ -5,3 +5,7 @@
   ansible.builtin.command: "katello-certs-check -c {{ sat_ssl_crt_path }} -k {{ sat_ssl_key_path }} -b {{ sat_ssl_ca_crt_path }}"
   register: kcc_result
   changed_when: kcc_result == 0
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite

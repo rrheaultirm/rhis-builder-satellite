@@ -7,28 +7,43 @@
   ansible.builtin.command: 'grubby --args="transparent_hugepage=never" --update-kernel ALL'
   register: grubby_result
   changed_when: grubby_result.rc == 0
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite
 
 # ensure tuned is installed and performance profile is set to throughput-performance and TPH is turned off
 - name: "Install tuned"
   ansible.builtin.dnf:
     name: "tuned"
     state: "present"
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite
 
 - name: "Reboot the Satellite server and wait till its up"
   ansible.builtin.reboot:
     pre_reboot_delay: 10
     post_reboot_delay: 60
     reboot_timeout: 300
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite
 
 - name: "Gather TPH status from kernel"
   ansible.builtin.command:
     cmd: "cat /sys/kernel/mm/transparent_hugepage/enabled"
   register: tph_result
   changed_when: tph_result.rc == 0
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite
 
 - name: "Ensure TPH never was registered by the command line"
   ansible.builtin.assert:
     that: "'[never]' in tph_result.stdout"
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite
 
 - name: "Configure new profile directory"
   ansible.builtin.file:
@@ -37,6 +52,9 @@
     mode: "0640"
     owner: "root"
     group: "root"
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite
 
 - name: "Create the tuned.conf file"
   ansible.builtin.template:
@@ -45,8 +63,14 @@
     mode: "0770"
     owner: "root"
     group: "root"
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite
 
 - name: "Enable the profile"
   ansible.builtin.command: "tuned-adm profile satellite"
   register: tuned_adm_result
   changed_when: tuned_adm_result.rc == 0
+  tags:
+    - tags_satellite_pre
+    - tags_disconnected_satellite

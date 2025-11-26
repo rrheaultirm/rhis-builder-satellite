@@ -8,9 +8,25 @@
     owner: root
     group: root
     mode: '0644'
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Enable the CA trust" # noqa: no-changed-when risky-shell-pipe
   ansible.builtin.command: "update-ca-trust enable"
+  register: update_ca_trust_enable_result
+  changed_when: update_ca_trust_enable_result.rc == 0
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
 
 - name: "Update the CA trust" # noqa: no-changed-when risky-shell-pipe
   ansible.builtin.command: "update-ca-trust"
+  register: update_ca_trust_result
+  changed_when: update_ca_trust_result.rc == 0
+  tags:
+    - tags_satellite_pre
+    - tags_satellite_pre_idm_integration
+    - tags_disconnected_satellite
