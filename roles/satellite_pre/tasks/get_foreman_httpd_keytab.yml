@@ -9,7 +9,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 # system_u:object_r:httpd_config_t:s0
 - name: "Create target directory"
@@ -26,7 +26,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 # apache apache system_u:object_r:etc_t:s0
 - name: "Move keytab to httpd directory"
@@ -44,4 +44,4 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync

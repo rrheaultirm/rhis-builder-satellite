@@ -39,40 +39,49 @@
         - always
 
     - name: "Apply role of satellite_pre to {{ ansible_fqdn }}"
+      when: satellite_disconnected
+      ansible.builtin.include_role:
+        name: satellite_disconnected_pre
+      tags:
+        - tags_satellite_pre
+        - tags_satellite_before_sync
+
+    - name: "Apply role of satellite_pre to {{ ansible_fqdn }}"
       ansible.builtin.include_role:
         name: satellite_pre
       tags:
         - tags_satellite_pre
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Apply role of satellite to {{ ansible_fqdn }}"
       ansible.builtin.include_role:
         name: satellite
       tags:
         - tags_satellite_install
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Apply role of satellite_post to {{ ansible_fqdn }}"
       ansible.builtin.include_role:
         name: satellite_post
       tags:
         - tags_satellite_post
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Ensure hammer configuration"
       ansible.builtin.import_tasks: "tasks/configure_hammer.yml"
       tags:
         - tags_basic_config
         - tags_configure_hammer
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Ensure Satellite manifest configuration on console.redhat.com"
+      when: not satellite_disconnected
       ansible.builtin.import_role:
         name: redhat_manifests
       tags:
         - tags_basic_config
         - tags_manifest
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Ensure Satellite manifest configuration in target Satellite"
       ansible.builtin.import_role:
@@ -80,9 +89,9 @@
       tags:
         - tags_basic_config
         - tags_manifest
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
-    - name: "Ensure Satellite manifest configuration"
+    - name: "Ensure Kerberos Remote Execution configuration"
       when:
         - satellite_pre_use_idm
         - rex_kerberos_enabled
@@ -91,7 +100,7 @@
       tags:
         - tags_basic_config
         - tags_rex_kerberos
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Ensure content credentials configuration"
       ansible.builtin.import_role:
@@ -100,16 +109,17 @@
         - tags_content_config
         - tags_redhat_repos
         - tags_repository_sets
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Ensure repository sets configuration"
+      when: not satellite_disconnected
       ansible.builtin.import_role:
         name: repository_sets
       tags:
         - tags_content_config
         - tags_redhat_repos
         - tags_repository_sets
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Ensure custom products configuration"
       ansible.builtin.import_role:
@@ -118,20 +128,30 @@
         - tags_content_config
         - custom_repos
         - tags_repositories
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     - name: "Ensure additional repository configuration"
+      when: not satellite_disconnected
       ansible.builtin.import_role:
         name: repositories
       tags:
         - tags_content_config
         - custom_repos
         - tags_repositories
-        - tags_pre_sync
+        - tags_satellite_before_sync
 
     # This task should occur synchronously - we want all the repos populated before we start creating content views
     - name: "Ensure repository synchronization... go grab a meal, this will take a while"
+      when: not satellite_disconnected
       ansible.builtin.import_tasks: "tasks/start_synchronization.yml"
+      tags:
+        - tags_content_config
+        - tags_sync
+
+    - name: "Ensure content import... go grab a meal, this will take a while"
+      when: satellite_disconnected
+      ansible.builtin.import_role: 
+        name: "content_imports"
       tags:
         - tags_content_config
         - tags_sync
@@ -145,6 +165,7 @@
         - tags_lifecycle_environments
 
     - name: "Ensure sync plans are attached and configured"
+      when: not satellite_disconnected
       ansible.builtin.import_role:
         name: sync_plans
       tags:

@@ -1,0 +1,9 @@
+---
+
+# Custom CDN Configuration -- configure on the downstream Satellite
+# Need to provide the upstream Satellite certificate
+# https://docs.redhat.com/en/documentation/red_hat_satellite/6.18/html/installing_satellite_server_in_a_disconnected_network_environment/performing-additional-configuration#configuring-satellite-server-to-consume-content-from-a-custom-cdn_satellite
+# hammer organization configure-cdn --name="My_Organization" \
+#   --type=custom_cdn \
+#   --url https://my-cdn.example.com \
+#   --ssl-ca-credential-id "My_CDN_CA_Cert_ID"

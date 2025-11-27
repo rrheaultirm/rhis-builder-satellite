@@ -21,6 +21,7 @@
       register: async_update
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync
 
     - name: "Check on system update"
       ansible.builtin.async_status:
@@ -31,28 +32,33 @@
       delay: "{{ async_delay }}"
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync
 
     - name: "Reset the Ruby module" # noqa: no-changed-when
       ansible.builtin.command: "dnf -y module reset ruby"
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync
 
     - name: "Reset the PostgreSQL module" # noqa: no-changed-when
       ansible.builtin.command: "dnf -y module reset postgresql"
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync
 
     - name: "Reset the Satellite module" # noqa: no-changed-when
       when: ansible_distribution_major_version == 8
       ansible.builtin.command: "dnf -y module reset satellite:el8"
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync
 
     - name: "Enable the Satellite module" # noqa: no-changed-when
       when: ansible_distribution_major_version == 8
       ansible.builtin.command: "dnf -y module enable satellite:el8"
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync
 
     - name: "Install the Satellite RPM packages"
       ansible.builtin.dnf:
@@ -63,6 +69,7 @@
       register: async_update
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync
 
     - name: "Wait for Satellite binary install to complete"
       ansible.builtin.async_status:
@@ -73,3 +80,4 @@
       delay: "{{ async_delay }}"
       tags:
         - tags_satellite_pre
+        - tags_satellite_before_sync

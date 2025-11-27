@@ -6,7 +6,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_firewall
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Ensure that iptables is not running or configured" # noqa: ignore-errors
   ansible.builtin.systemd:
@@ -18,7 +18,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_firewall
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Ensure that the Firewalld service is enabled and running"
   ansible.builtin.systemd:
@@ -29,7 +29,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_firewall
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Set the primary interface for Satellite communication"
   when: override_iface is defined and (sat_override_iface | length) > 0
@@ -38,7 +38,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_firewall
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Configure Firewalld services and ports for Satellite"
   ansible.builtin.include_role:
@@ -60,4 +60,4 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_firewall
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync

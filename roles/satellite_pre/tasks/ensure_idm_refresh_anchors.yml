@@ -11,7 +11,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Enable the CA trust" # noqa: no-changed-when risky-shell-pipe
   ansible.builtin.command: "update-ca-trust enable"
@@ -20,7 +20,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Update the CA trust" # noqa: no-changed-when risky-shell-pipe
   ansible.builtin.command: "update-ca-trust"
@@ -29,4 +29,4 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync

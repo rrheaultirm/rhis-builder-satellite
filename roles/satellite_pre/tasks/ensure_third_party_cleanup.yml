@@ -12,6 +12,7 @@
   register: repo_files
   tags:
     - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Disable all third party repos"
   ansible.builtin.copy:
@@ -26,6 +27,7 @@
     loop_var: repo_file
   tags:
     - tags_satellite_pre
+    - tags_satellite_before_sync
 
 # Satellite is an appliance-like deployment. It must be registered to the CDN with CDN repos.
 # uninstall any RHUI client
@@ -35,6 +37,7 @@
   register: pkg_list
   tags:
     - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Remove the RHUI client if it exists"
   when: pkg_list.results | selectattr( "yumstate", "match", "installed" ) | list | length != 0
@@ -46,6 +49,7 @@
     loop_var: rhui_package
   tags:
     - tags_satellite_pre
+    - tags_satellite_before_sync
 
 # clear the dnf/yum cache
 - name: "Clean up the dnf cache"
@@ -54,6 +58,7 @@
   changed_when: true
   tags:
     - tags_satellite_pre
+    - tags_satellite_before_sync
 
 # ensure subscription-manager/rhsm is managing repos
 - name: "Update the subscription manager configuration to ensure rhsm manages repos"
@@ -62,3 +67,4 @@
   changed_when: true
   tags:
     - tags_satellite_pre
+    - tags_satellite_before_sync

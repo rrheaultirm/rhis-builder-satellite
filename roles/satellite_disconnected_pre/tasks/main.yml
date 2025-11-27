@@ -4,20 +4,22 @@
 # Configure offline base OS repos
 
 - name: "Ensure that the target mounts are not yet mounted"
-  ansible.builtin.mount:
+  ansible.posix.mount:
     src: "{{ satellite_disconnected_root }}/{{ satellite_os_iso_source }}"
     path: "{{ satellite_os_repo_mount }}"
     state: unmounted
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Ensure that the target mounts are not yet mounted"
-  ansible.builtin.mount:
+  ansible.posix.mount:
     src: "{{ satellite_disconnected_root }}/{{ satellite_install_iso_source }}"
     path: "{{ satellite_install_repo_mount }}"
     state: unmounted
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Create the target directory"
   ansible.builtin.file:
@@ -25,7 +27,8 @@
     state: directory
     mode: "0655"
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Copy the OS iso - validates and overwrites if necessary - Please wait..."
   ansible.builtin.copy:
@@ -33,7 +36,8 @@
     dest: "{{ satellite_disconnected_root }}/{{ satellite_os_iso_source }}"
     mode: "0655"
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Copy the Satellite iso - validates and overwrites if necessary - Please wait..."
   ansible.builtin.copy:
@@ -41,27 +45,30 @@
     dest: "{{ satellite_disconnected_root }}/{{ satellite_install_iso_source }}"
     mode: "0655"
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Mount the OS source"
-  ansible.builtin.mount:
+  ansible.posix.mount:
     src: "{{ satellite_disconnected_root }}/{{ satellite_os_iso_source }}"
     path: "{{ satellite_os_repo_mount }}"
     fstype: "iso9660"
     opts: "ro"
     state: mounted
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Mount the Satellite source"
-  ansible.builtin.mount:
+  ansible.posix.mount:
     src: "{{ satellite_disconnected_root }}/{{ satellite_install_iso_source }}"
     path: "{{ satellite_install_repo_mount }}"
     fstype: "iso9660"
     opts: "ro"
     state: mounted
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Template the OS repo file"
   ansible.builtin.template:
@@ -71,14 +78,16 @@
     group: "root"
     mode: "0644"
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Refresh the repos"
   ansible.builtin.command: "dnf repolist"
   register: repolist_out
   changed_when: repolist_out.rc == 0
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 - name: "Assertion"
   ansible.builtin.assert:
@@ -86,15 +95,17 @@
       - "'RHEL-BaseOS' in repolist_out.stdout"
       - "'RHEL-AppStream' in repolist_out.stdout"
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 # Update the system based on the current repos
-- name: "Update the system"
+- name: "Update the system" # noqa package-latest
   ansible.builtin.dnf:
     name: "*"
     state: latest
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
 # Copy installation files to disconnected satellite
 - name: "Install satellite binaries from DVD"
@@ -102,17 +113,13 @@
   register: satellite_install_packages
   changed_when: satellite_install_packages.rc == 0
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync
 
-# Run Satellite pre with disconnected tags
-- name: "Import the satellite_pre role using disconnected tags"
-  ansible.builtin.include_role:
-    name: "satellite_pre"
-  tags:
-    - tags_disconnected_satellite
-
+# We are done the disconnected pre section
 - name: "Disconnected Satellite prepartion complete"
   ansible.builtin.assert:
     that: true
   tags:
-    - tags_disconnected_satellite
+    - tags_satellite_pre
+    - tags_satellite_before_sync

@@ -9,7 +9,7 @@
   changed_when: grubby_result.rc == 0
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 # ensure tuned is installed and performance profile is set to throughput-performance and TPH is turned off
 - name: "Install tuned"
@@ -18,7 +18,7 @@
     state: "present"
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Reboot the Satellite server and wait till its up"
   ansible.builtin.reboot:
@@ -27,7 +27,7 @@
     reboot_timeout: 300
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Gather TPH status from kernel"
   ansible.builtin.command:
@@ -36,14 +36,14 @@
   changed_when: tph_result.rc == 0
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Ensure TPH never was registered by the command line"
   ansible.builtin.assert:
     that: "'[never]' in tph_result.stdout"
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Configure new profile directory"
   ansible.builtin.file:
@@ -54,7 +54,7 @@
     group: "root"
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Create the tuned.conf file"
   ansible.builtin.template:
@@ -65,7 +65,7 @@
     group: "root"
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Enable the profile"
   ansible.builtin.command: "tuned-adm profile satellite"
@@ -73,4 +73,4 @@
   changed_when: tuned_adm_result.rc == 0
   tags:
     - tags_satellite_pre
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync

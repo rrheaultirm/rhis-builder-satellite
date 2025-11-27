@@ -3,36 +3,42 @@
 # Supports RHEL8 running Satellite 6.11 or greater
 
 - name: "Ensure CDN registration"
+  when: not satellite_disconnected
   ansible.builtin.import_tasks: "ensure_cdn_registration.yml"
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_cdn_registration
+    - tags_satellite_before_sync
 
 - name: "Ensure satellite reposistories are enabled"
+  when: not satellite_disconnected
   ansible.builtin.import_tasks: "ensure_repositories.yml"
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_repos
+    - tags_satellite_before_sync
 
 - name: "Ensure satellite is using chronyd for time"
   ansible.builtin.import_tasks: "ensure_chronyd.yml"
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_chrony
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Ensure satellite firewall ports are configured"
   ansible.builtin.import_tasks: ensure_firewalld_config.yml
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_firewall
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Ensure satellite binaries are installed"
+  when: not satellite_disconnected
   ansible.builtin.import_tasks: ensure_sat_binaries.yml
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_packages
+    - tags_satellite_before_sync
 
 - name: "Start IdM integration block"
   when: satellite_pre_use_idm
@@ -40,7 +46,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Use non-idm certificates"
   when:
@@ -50,7 +56,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_non_idm_certs
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Validate certificates for use with satellite"
   when: satellite_pre_use_idm or use_non_idm_certs
@@ -58,7 +64,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_non_idm_certs
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Tune system for satellite"
   when: apply_standard_tuning
@@ -66,4 +72,4 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_tune_for_satellite
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync

@@ -7,3 +7,4 @@
     state: present
   tags:
     - tags_satellite_pre
+    - tags_satellite_before_sync

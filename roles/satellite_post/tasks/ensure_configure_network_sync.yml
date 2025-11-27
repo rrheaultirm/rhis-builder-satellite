@@ -1,0 +1,11 @@
+---
+
+# Implement inter-satellite sync network sync -- configure on the downstream Satellite
+# Need to provide the upstream Satellite certificate
+# hammer organization configure-cdn --name="My_Downstream_Organization" \
+#   --type=network_sync \
+#   --url https://upstream-satellite.example.com \
+#   --username upstream_username --password upstream_password \
+#   --ssl-ca-credential-id "My_Upstream_CA_Cert_ID" \ --upstream-organization-label="_My_Upstream_Organization" \
+#   [--upstream-lifecycle-environment-label="My_Lifecycle_Environment"] \
+#   [--upstream-content-view-label="My_Content_View"]

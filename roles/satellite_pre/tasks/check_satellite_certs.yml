@@ -8,4 +8,4 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync

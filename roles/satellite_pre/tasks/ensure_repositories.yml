@@ -11,6 +11,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
+    - tags_satellite_before_sync
 
 - name: "Ensure the release is not set" # noqa: no-changed-when
   ansible.builtin.command: "subscription-manager release --unset"
@@ -19,6 +20,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
+    - tags_satellite_before_sync
 
 - name: "Clean the yum metadata" # noqa: no-changed-when
   ansible.builtin.command: "dnf clean all"
@@ -27,3 +29,4 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_idm_integration
+    - tags_satellite_before_sync

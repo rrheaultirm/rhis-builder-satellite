@@ -1,6 +1,32 @@
 ---
 
 # Perform satellite installation post tasks. e.g. post install tuning
+- name: "Disconnected Satellite post"
+  when: satellite_disconnected
+  block:
+    - name: "Ensure disconnected Satellite has subscription connection set to false"
+      redhat.satellite.setting:
+        username: "{{ satellite_username | default(omit) }}"
+        password: "{{ satellite_password | default(omit) }}"
+        use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
+        server_url: "{{ satellite_url }}"
+        validate_certs: "{{ satellite_validate_certs | default(omit) }}"
+        name: "subscription_connection_enabled"
+        value: false
+
+
+# hammer organization configure-cdn --name="My_Organization" --type=export_sync
+    - name: "Ensure organization cdn configuration is set to 'export_sync'"
+      redhat.satellite.organization:
+        username: "{{ satellite_username | default(omit) }}"
+        password: "{{ satellite_password | default(omit) }}"
+        use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
+        server_url: "{{ satellite_url }}"
+        validate_certs: "{{ satellite_validate_certs | default(omit) }}"
+        name: "{{ satellite_organization }}"
+        parameters:
+          - name: "configure-cdn"
+            value: "export_sync"
 
 - name: "Ensure postgresql configuration updates"
   ansible.builtin.blockinfile:

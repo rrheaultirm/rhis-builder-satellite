@@ -7,7 +7,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_chrony
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Configure time servers"
   ansible.builtin.template:
@@ -19,7 +19,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_chrony
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Start the chronyd service with default settings"
   ansible.builtin.service:
@@ -29,7 +29,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_chrony
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Ensure the time is synchronized"
   ansible.builtin.command: "chronyc makestep" # noqa: no-changed-when
@@ -38,7 +38,7 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_chrony
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
 
 - name: "Install the SOS Report package"
   ansible.builtin.dnf:
@@ -47,4 +47,4 @@
   tags:
     - tags_satellite_pre
     - tags_satellite_pre_chrony
-    - tags_disconnected_satellite
+    - tags_satellite_before_sync
