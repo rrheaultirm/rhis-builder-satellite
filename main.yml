@@ -150,7 +150,7 @@
 
     - name: "Ensure content import... go grab a meal, this will take a while"
       when: satellite_disconnected
-      ansible.builtin.import_role: 
+      ansible.builtin.import_role:
         name: "content_imports"
       tags:
         - tags_content_config
