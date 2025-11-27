@@ -8,30 +8,40 @@
     src: "{{ satellite_disconnected_root }}/{{ satellite_os_iso_source }}"
     path: "{{ satellite_os_repo_mount }}"
     state: unmounted
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Ensure that the target mounts are not yet mounted"
   ansible.builtin.mount:
     src: "{{ satellite_disconnected_root }}/{{ satellite_install_iso_source }}"
     path: "{{ satellite_install_repo_mount }}"
     state: unmounted
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Create the target directory"
   ansible.builtin.file:
     path: "{{ satellite_disconnected_root }}"
     state: directory
     mode: "0655"
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Copy the OS iso - validates and overwrites if necessary - Please wait..."
   ansible.builtin.copy:
     src: "{{ satellite_os_iso_source }}"
     dest: "{{ satellite_disconnected_root }}/{{ satellite_os_iso_source }}"
     mode: "0655"
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Copy the Satellite iso - validates and overwrites if necessary - Please wait..."
   ansible.builtin.copy:
     src: "{{ satellite_install_iso_source }}"
     dest: "{{ satellite_disconnected_root }}/{{ satellite_install_iso_source }}"
     mode: "0655"
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Mount the OS source"
   ansible.builtin.mount:
@@ -40,14 +50,18 @@
     fstype: "iso9660"
     opts: "ro"
     state: mounted
+  tags:
+    - tags_disconnected_satellite
 
-- name: "Mount the OS source"
+- name: "Mount the Satellite source"
   ansible.builtin.mount:
     src: "{{ satellite_disconnected_root }}/{{ satellite_install_iso_source }}"
     path: "{{ satellite_install_repo_mount }}"
     fstype: "iso9660"
     opts: "ro"
     state: mounted
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Template the OS repo file"
   ansible.builtin.template:
@@ -56,33 +70,43 @@
     owner: "root"
     group: "root"
     mode: "0644"
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Refresh the repos"
   ansible.builtin.command: "dnf repolist"
   register: repolist_out
   changed_when: repolist_out.rc == 0
+  tags:
+    - tags_disconnected_satellite
 
 - name: "Assertion"
   ansible.builtin.assert:
     that:
       - "'RHEL-BaseOS' in repolist_out.stdout"
       - "'RHEL-AppStream' in repolist_out.stdout"
+  tags:
+    - tags_disconnected_satellite
 
 # Update the system based on the current repos
 - name: "Update the system"
   ansible.builtin.dnf:
     name: "*"
-    state: update
+    state: latest
+  tags:
+    - tags_disconnected_satellite
 
 # Copy installation files to disconnected satellite
 - name: "Install satellite binaries from DVD"
   ansible.builtin.command: "{{ satellite_install_repo_mount }}/install_packages"
   register: satellite_install_packages
   changed_when: satellite_install_packages.rc == 0
+  tags:
+    - tags_disconnected_satellite
 
 # Run Satellite pre with disconnected tags
 - name: "Import the satellite_pre role using disconnected tags"
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: "satellite_pre"
   tags:
     - tags_disconnected_satellite
@@ -90,3 +114,5 @@
 - name: "Disconnected Satellite prepartion complete"
   ansible.builtin.assert:
     that: true
+  tags:
+    - tags_disconnected_satellite
