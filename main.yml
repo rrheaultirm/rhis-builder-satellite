@@ -75,7 +75,6 @@
         - tags_satellite_before_sync
 
     - name: "Ensure Satellite manifest configuration on console.redhat.com"
-      when: not satellite_disconnected
       ansible.builtin.import_role:
         name: redhat_manifests
       tags:
