@@ -13,20 +13,76 @@
         validate_certs: "{{ satellite_validate_certs | default(omit) }}"
         name: "subscription_connection_enabled"
         value: false
+      tags:
+        - tags_satellite_post
+        - tags_satellite_before_sync
 
+    - name: "Ensure organization cdn configuration is set"
+      when: satellite_cdn_configuration_type == 'export_sync'
+      ansible.builtin.command:
+        cmd: "hammer organization configure-cdn --name='{{ satellite_organization }}' --type={{ satellite_cdn_configuration_type }}"
+      register: hammer_result
+      changed_when: hammer_result.rc == 0
+      tags:
+        - tags_satellite_post
+        - tags_satellite_before_sync
 
 # hammer organization configure-cdn --name="My_Organization" --type=export_sync
-    - name: "Ensure organization cdn configuration is set to 'export_sync'"
-      redhat.satellite.organization:
-        username: "{{ satellite_username | default(omit) }}"
-        password: "{{ satellite_password | default(omit) }}"
-        use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
-        server_url: "{{ satellite_url }}"
-        validate_certs: "{{ satellite_validate_certs | default(omit) }}"
-        name: "{{ satellite_organization }}"
-        parameters:
-          - name: "configure-cdn"
-            value: "export_sync"
+    # - name: "Get the organization info"
+    #   redhat.satellite.organization_info:
+    #     username: "{{ satellite_username | default(omit) }}"
+    #     password: "{{ satellite_password | default(omit) }}"
+    #     use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
+    #     server_url: "{{ satellite_url }}"
+    #     validate_certs: "{{ satellite_validate_certs | default(omit) }}"
+    #     name: "{{ satellite_organization }}"
+    #   register: result
+    #   tags:
+    #     - tags_satellite_post
+    #     - tags_satellite_before_sync
+
+    # - name: "Log the info"
+    #   ansible.builtin.debug:
+    #     var: result
+    #   tags:
+    #     - tags_satellite_post
+    #     - tags_satellite_before_sync
+
+    # - name: "Get the organization_id"
+    #   ansible.builtin.set_fact:
+    #     satellite_organization_id: "{{ result.organization.id }}"
+    #   tags:
+    #     - tags_satellite_post
+    #     - tags_satellite_before_sync
+
+    # - name: "Log the info"
+    #   ansible.builtin.debug:
+    #     var: satellite_organization_id
+    #   tags:
+    #     - tags_satellite_post
+    #     - tags_satellite_before_sync
+
+    # - name: "Ensure organization cdn configuration is set"
+    #   ansible.builtin.uri:
+    #     url: "https://{{ ansible_fqdn }}/api/v2/organizations/{{ satellite_organization_id }}/cdn_configuration"
+    #     user: "{{ satellite_username }}"
+    #     password: "{{ satellite_password }}"
+    #     method: PUT
+    #     body_format: "form-urlencoded"
+    #     body:
+    #       id: "{{ satellite_organization_id }}"
+    #       type: "{{ satellite_cdn_configuration_type }}"
+    #       url: "{{ satellite_cdn_configuration_url | default (omit) }}"
+    #       username: "{{ satellite_cdn_configuration_username | default (omit) }}"
+    #       password: "{{ satellite_cdn_configuration_password | default (omit) }}"
+    #       upstream_organization_label: "{{ satellite_cdn_configuration_upstream_organization_label | default (omit) }}"
+    #       upstream_content_view_label: "{{ satellite_cdn_configuration_upstream_content_view_label | default (omit) }}"
+    #       upstream_lifecycle_environment_label: "{{ satellite_cdn_configuration_upstream_lifecycle_environment_label | default (omit) }}"
+    #       ssl_ca_credential_id: "{{ satellite_cdn_configuration_ssl_ca_credential_id | default (omit) }}"
+    #       custom_cdn_auth_enabled: "{{ satellite_cdn_configuration_custom_cdn_auth_enabled | default (omit) }}"
+    #   tags:
+    #     - tags_satellite_post
+    #     - tags_satellite_before_sync
 
 - name: "Ensure postgresql configuration updates"
   ansible.builtin.blockinfile:
@@ -37,10 +93,13 @@
         shared_buffers: "{{ satellite_post.postgres_shared_buffers | default('2GB') }}"
         work_mem: "{{ satellite_post.postgres_work_mem | default('8MB') }}"
         autovacuum_vacuum_cost_limit: "{{ satellite_post.postgres_avcl | default(2000) }}"
+  tags:
+    - tags_satellite_post
+    - tags_satellite_before_sync
 
 - name: "Rerun_installer"
   ansible.builtin.include_role:
     name: satellite
   tags:
-    - tags_phase_3
     - tags_satellite_post
+    - tags_satellite_before_sync

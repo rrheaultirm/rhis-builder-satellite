@@ -110,6 +110,8 @@
 # Copy installation files to disconnected satellite
 - name: "Install satellite binaries from DVD"
   ansible.builtin.command: "{{ satellite_install_repo_mount }}/install_packages"
+  args:
+    chdir: "{{ satellite_install_repo_mount }}"
   register: satellite_install_packages
   changed_when: satellite_install_packages.rc == 0
   tags:
