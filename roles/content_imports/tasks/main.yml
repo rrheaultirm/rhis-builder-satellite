@@ -1,0 +1,43 @@
+---
+
+# This role implements content imports for Organizations within Satellite
+# define a content_imports entity in the host_vars directory for your satellite,
+# see host_vars/satellite.example.ca/content_imports.yml
+
+
+- ansible.builtin.set_fact:  # noqa name[missing]
+    _start_time: "{{ ansible_date_time.iso8601 }}"
+  tags:
+    - tags_content_config
+    - tags_content_imports
+
+- name: "Log the start time of the operation"
+  ansible.builtin.debug:
+    var: _start_time
+  tags:
+    - tags_content_config
+    - tags_content_imports
+
+- name: "Perform the content_imports"
+  when: content_imports is defined and (content_imports | length) > 0
+  ansible.builtin.include_tasks: "ensure_content_import.yml"
+  loop: "{{ content_imports }}"
+  loop_control:
+    loop_var: content_import
+  no_log: true
+  tags:
+    - tags_content_config
+    - tags_content_imports
+
+- ansible.builtin.set_fact:  # noqa name[missing]
+    _end_time: "{{ ansible_date_time.iso8601 }}"
+  tags:
+    - tags_content_config
+    - tags_content_imports
+
+- name: "Log the start time of the operation"
+  ansible.builtin.debug:
+    var: _end_time
+  tags:
+    - tags_content_config
+    - tags_content_imports

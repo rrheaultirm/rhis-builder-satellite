@@ -6,6 +6,7 @@
   when: content_export.type == 'library'
   ansible.builtin.include_tasks: "perform_library_export.yml"
   tags:
+    - tags_content_config
     - tags_content_exports
     - tags_library_export
 
@@ -13,6 +14,7 @@
   when: content_export.type == 'repository'
   ansible.builtin.include_tasks: "perform_repository_export.yml"
   tags:
+    - tags_content_config
     - tags_content_exports
     - tags_repository_export
 
@@ -20,5 +22,6 @@
   when: content_export.type == 'cv_version'
   ansible.builtin.include_tasks: "perform_cv_version_export.yml"
   tags:
+    - tags_content_config
     - tags_content_exports
-    - tags_repository_export
+    - tags_content_view_export

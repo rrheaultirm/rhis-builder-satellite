@@ -1,0 +1,27 @@
+---
+
+# perform a library or repository export
+
+- name: "Perform library import for {{ content_import.name }}"
+  when: content_import.type == 'library'
+  ansible.builtin.include_tasks: "perform_library_import.yml"
+  tags:
+    - tags_content_config
+    - tags_content_imports
+    - tags_library_import
+
+- name: "Perform repository import for {{ content_import.name }}"
+  when: content_import.type == 'repository'
+  ansible.builtin.include_tasks: "perform_repository_import.yml"
+  tags:
+    - tags_content_config
+    - tags_content_imports
+    - tags_repository_import
+
+- name: "Perform content_view import for {{ content_import.name }}"
+  when: content_import.type == 'cv_version'
+  ansible.builtin.include_tasks: "perform_cv_version_import.yml"
+  tags:
+    - tags_content_config
+    - tags_content_imports
+    - tags_content_view_import

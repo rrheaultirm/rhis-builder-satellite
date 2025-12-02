@@ -1,0 +1,20 @@
+---
+
+# Export the Satellite Library for the organization
+
+- name: "Performing library import {{ content_import.name }}" # noqa: name[template]
+  redhat.satellite.content_import_library:
+    username: "{{ satellite_username | default(omit) }}"
+    password: "{{ satellite_password | default(omit) }}"
+    use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
+    server_url: "{{ satellite_url }}"
+    organization: "{{ satellite_organization }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
+    ca_path: "{{ content_import.ca_path | default(omit) }}"
+    metadata: "{{ content_import.metadata | default(omit) }}"
+    metadata_file: "{{ content_import.metadata_file | default(omit) }}"
+    path: "{{ content_import.import_path }}"
+  tags:
+    - tags_content_config
+    - tags_content_imports
+    - tags_library_import

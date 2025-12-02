@@ -17,3 +17,7 @@
     format: "{{ content_export.format | default(omit) }}"
     from_history_id: "{{ content_export.from_history_id | default(omit) }}"
     incremental: "{{ content_export.incremental | default(omit) }}"
+  tags:
+    - tags_content_config
+    - tags_content_exports
+    - tags_library_export
