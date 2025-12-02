@@ -8,7 +8,7 @@
   tags:
     - tags_content_config
     - tags_content_exports
-    - tags_library_export
+    - tags_library_exports
 
 - name: "Perform repository export for {{ content_export.name }}"
   when: content_export.type == 'repository'
@@ -16,7 +16,7 @@
   tags:
     - tags_content_config
     - tags_content_exports
-    - tags_repository_export
+    - tags_repository_exports
 
 - name: "Perform content_view export for {{ content_export.name }}"
   when: content_export.type == 'cv_version'
@@ -24,4 +24,4 @@
   tags:
     - tags_content_config
     - tags_content_exports
-    - tags_content_view_export
+    - tags_content_view_exports

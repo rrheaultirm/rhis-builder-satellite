@@ -1,6 +1,6 @@
 ---
 
-# Export the Satellite Library for the organization
+# import the Satellite Library for the organization
 
 - name: "Performing library import {{ content_import.name }}" # noqa: name[template]
   redhat.satellite.content_import_library:
@@ -14,7 +14,31 @@
     metadata: "{{ content_import.metadata | default(omit) }}"
     metadata_file: "{{ content_import.metadata_file | default(omit) }}"
     path: "{{ content_import.import_path }}"
+  async: 36000
+  poll: 0
+  register: import_library_result
   tags:
     - tags_content_config
     - tags_content_imports
-    - tags_library_import
+    - tags_library_imports
+
+- name: "Waiting on import job to finish for Library {{ content_import.name }}"
+  ansible.builtin.async_status:
+    jid: "{{ import_library_result.ansible_job_id }}"
+  register: job_result
+  until: job_result is finished
+  retries: 3600
+  delay: 10
+  tags:
+    - tags_content_config
+    - tags_content_imports
+    - tags_library_imports
+
+- name: Clean up async file
+  ansible.builtin.async_status:
+    jid: '{{ import_library_result.ansible_job_id }}'
+    mode: cleanup
+  tags:
+    - tags_content_config
+    - tags_content_imports
+    - tags_library_imports

@@ -8,7 +8,7 @@
   tags:
     - tags_content_config
     - tags_content_imports
-    - tags_library_import
+    - tags_library_imports
 
 - name: "Perform repository import for {{ content_import.name }}"
   when: content_import.type == 'repository'
@@ -16,7 +16,7 @@
   tags:
     - tags_content_config
     - tags_content_imports
-    - tags_repository_import
+    - tags_repository_imports
 
 - name: "Perform content_view import for {{ content_import.name }}"
   when: content_import.type == 'cv_version'
@@ -24,4 +24,4 @@
   tags:
     - tags_content_config
     - tags_content_imports
-    - tags_content_view_import
+    - tags_content_view_imports

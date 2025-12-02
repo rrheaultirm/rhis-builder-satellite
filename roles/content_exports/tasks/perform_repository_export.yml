@@ -14,11 +14,35 @@
     validate_certs: "{{ satellite_validate_certs | default(omit) }}"
     ca_path: "{{ content_export.ca_path | default(omit) }}"
     chunk_size_gb: "{{ content_export.chunk_size_gb | default(omit) }}"
-    destination_server: "{{ content_export.destination_server | default(omit) }}"  # The underlying module primitive supports this
+#    destination_server: "{{ content_export.destination_server | default(omit) }}"  # The underlying module primitive supports this
     format: "{{ content_export.format | default(omit) }}"
     from_history_id: "{{ content_export.from_history_id | default(omit) }}"
     incremental: "{{ content_export.incremental | default(omit) }}"
+  async: 36000
+  poll: 0
+  register: export_repository_result
   tags:
     - tags_content_config
     - tags_content_exports
-    - tags_repository_export
+    - tags_repository_exports
+
+- name: "Waiting on export job to finish for repository {{ content_export.name }}"
+  ansible.builtin.async_status:
+    jid: "{{ export_repository_result.ansible_job_id }}"
+  register: job_result
+  until: job_result is finished
+  retries: 3600
+  delay: 10
+  tags:
+    - tags_content_config
+    - tags_content_exports
+    - tags_repository_exports
+
+- name: Clean up async file
+  ansible.builtin.async_status:
+    jid: '{{ export_repository_result.ansible_job_id }}'
+    mode: cleanup
+  tags:
+    - tags_content_config
+    - tags_content_exports
+    - tags_repository_exports

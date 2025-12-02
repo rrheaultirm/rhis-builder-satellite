@@ -17,7 +17,31 @@
     format: "{{ content_export.format | default(omit) }}"
     from_history_id: "{{ content_export.from_history_id | default(omit) }}"
     incremental: "{{ content_export.incremental | default(omit) }}"
+  async: 36000
+  poll: 0
+  register: export_library_result
   tags:
     - tags_content_config
     - tags_content_exports
-    - tags_library_export
+    - tags_library_exports
+
+- name: "Waiting on export job to finish for Library {{ content_export.name }}"
+  ansible.builtin.async_status:
+    jid: "{{ export_library_result.ansible_job_id }}"
+  register: job_result
+  until: job_result is finished
+  retries: 3600
+  delay: 10
+  tags:
+    - tags_content_config
+    - tags_content_exports
+    - tags_library_exports
+
+- name: Clean up async file
+  ansible.builtin.async_status:
+    jid: '{{ export_library_result.ansible_job_id }}'
+    mode: cleanup
+  tags:
+    - tags_content_config
+    - tags_content_exports
+    - tags_library_exports
