@@ -31,4 +31,4 @@
 - name: "Export the metadata.json file"
   ansible.builtin.command: "hammer content-export generate-metadata --id {{ export_result.task.output.export_history_id }}"
   register: export_metadata_result
-  changed_when: export_result.rc == 0
+  changed_when: export_metadata_result.rc == 0
