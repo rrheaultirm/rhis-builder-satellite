@@ -43,7 +43,7 @@
 - name: "Rewrite the content_imports.yml file"
   ansible.builtin.template:
     src: "content_imports.j2"
-    dest: "/var/lib/pulp/imports/{{ destination_server }}/content_imports.yml"
+    dest: "/var/lib/pulp/exports/{{ destination_server }}/content_imports.yml"
     mode: "0644"
     owner: "pulp"
     group: "pulp"
