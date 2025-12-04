@@ -1,0 +1,49 @@
+---
+
+# This task will generate a content_imports.yml file containing a timestamp for use with
+# rhis-provisioner container and the downstream disconnected satellite configuration
+# Currently if you are performing multiple imports, you may need to manually merge the dictionaries
+# we are going to append the existing export operations to any existing content_imports dictionary
+# and then re-write the file. So if there is stuff there, it will persist, if there is another file
+# somewhere, you will need to replace it or merge it.
+# by default we will write out the file to host_vars/{{ ansible_fqdn }}/content_imports.yml
+
+- name: "Create the content_import dictionary item"
+  ansible.builtin.set_fact:
+    content_import_dict: "{{ content_import_dict | default({}) | combine({fact.key: fact.value}) }}"
+  loop:
+    - key: "name"
+      value: "{{ content_export.name }}"
+    - key: "type"
+      value: "{{ content_export.type }}"
+    - key: "import_path"
+      value: "{{ export_result.task.input.export_action_output.export_path }}"
+    - key: "metadata_file"
+      value: "{{ export_result.task.input.export_action_output.export_path }}/metadata.json"
+  loop_control:
+    loop_var: fact
+  tags:
+    - tags_content_config
+    - tags_content_exports
+
+- name: "Append the content_import item to content_imports list"
+  ansible.builtin.set_fact:
+    content_imports: "{{ content_imports | default([]) + content_import_dict }}"
+  tags:
+    - tags_content_config
+    - tags_content_exports
+
+- name: "Update the timestamp value"
+  ansible.builtin.fact:
+    generation_datetime: "{{ ansible_date_time.iso8601 }}"
+  tags:
+    - tags_content_config
+    - tags_content_exports
+
+- name: "Rewrite the content_imports.yml file"
+  ansible.builtin.template:
+    src: "content_imports.j2"
+    dest: "/var/lib/pulp/imports/{{ destination_server }}/content_imports.yml"
+    mode: "0644"
+    owner: "pulp"
+    group: "pulp"
