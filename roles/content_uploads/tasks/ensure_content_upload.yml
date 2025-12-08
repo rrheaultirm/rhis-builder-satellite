@@ -28,7 +28,8 @@
   loop_control:
     loop_var: current_file_src
 
-- ansible.builtin.debug:
+- name: "Log uploads"
+  ansible.builtin.debug:
     var: content_upload
 
 - name: "Upload the content into the Satellite repositories"
