@@ -1,0 +1,44 @@
+---
+
+# # Perform the upload to the target product and repository
+# - name: "Create the target directory on the satellite if required"
+#   when:
+#     - content_upload.upload_from_provisioner is defined
+#     - content_upload.upload_from_provisioner
+#     - (content_upload.target_directory != "")
+#   ansible.builtin.copy:
+#     src: "{{ content_upload.source_directory | default('') }}{{ current_file_src }}"
+#     dest: "{{ content_upload.target_directory | default('/var/lib/pulp/imports') }}{{ current_file_src }}"
+#     mode: "0644"
+#     owner: "pulp"
+#     group: "pulp"
+
+
+# - name: "Copy the content to the target satellite if required"
+#   when:
+#     - content_upload.upload_from_provisioner is defined
+#     - content_upload.upload_from_provisioner
+#   ansible.builtin.copy:
+#     src: "{{ content_upload.source_directory | default('') }}{{ current_file_src }}"
+#     dest: "{{ content_upload.target_directory | default('/var/lib/pulp/imports') }}{{ current_file_src }}"
+#     mode: "0644"
+#     owner: "pulp"
+#     group: "pulp"
+
+- name: "Upload the content into the Satellite repositories"
+  when: content_upload.src_files is defined and (content_upload.src_files | length) > 0
+  redhat.satellite.content_upload:
+    username: "{{ satellite_username | default(omit) }}"
+    password: "{{ satellite_password | default(omit) }}"
+    use_gssapi: "{{ satellite_use_gssapi | default(omit) }}"
+    server_url: "{{ satellite_url }}"
+    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
+    ca_path: "{{ content_import.ca_path | default(omit) }}"
+    organization: "{{ content_upload.organization | default(satellite_organization) }}"
+    product: "{{ content_upload.product }}"
+    repository: "{{ content_upload.repository | default(omit) }}" # either this or ostree repository are required
+    ostree_repository_name: "{{ content_upload.ostree_repository_name | default(omit) }}" # only valid once OSTree support is turned back on
+    src: "{{ current_file_src }}"
+  loop: "{{ content_uploads.src_files }}"
+  loop_control:
+    loop_var: current_file_src

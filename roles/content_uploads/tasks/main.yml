@@ -1,0 +1,12 @@
+---
+
+- name: "Perform the content_uploads"
+  when: content_uploads is defined and (content_uploads | length) > 0
+  ansible.builtin.include_tasks: "ensure_content_upload.yml"
+  loop: "{{ content_uploads }}"
+  loop_control:
+    loop_var: content_upload
+  no_log: true
+  tags:
+    - tags_content_config
+    - tags_content_uploads
