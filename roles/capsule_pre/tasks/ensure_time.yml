@@ -6,7 +6,7 @@
 
 - name: "Ensure time servers"
   ansible.builtin.template:
-    src: chrony.conf.j2
+    src: chrony.j2
     dest: /etc/chrony.conf
     mode: "0644"
 
